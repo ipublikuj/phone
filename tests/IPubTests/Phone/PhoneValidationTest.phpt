@@ -78,6 +78,33 @@ class PhoneValidationTest extends Tester\TestCase
 		Assert::true($field->hasErrors());
 	}
 
+	public function testValidatePhoneWithCountryField()
+	{
+		// Validator with correct country field supplied.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone')
+			->setValue('016123456');
+
+		$countryField = $field->getForm()->getComponent('phone_country');
+		$countryField
+			->setValue('BE');
+
+		Assert::false($field->hasErrors());
+
+		// Validator with wrong country field supplied.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone')
+			->setValue('016123456');
+
+		$countryField = $field->getForm()->getComponent('phone_country');
+		$countryField
+			->setValue('NL');
+
+		Assert::true($field->hasErrors());
+	}
+
 	/**
 	 * @param array $data
 	 *
@@ -143,6 +170,8 @@ class PhoneValidationTest extends Tester\TestCase
 			'CZ' => 'Czech Republic',
 			'SK' => 'Slovakia',
 			'GB' => 'Great Britain',
+			'BE' => 'Belgium',
+			'NL' => 'Netherlands',
 		]);
 		// Add form control to form
 		$form->addComponent($control, 'phone_country');
