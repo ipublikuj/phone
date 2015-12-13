@@ -36,41 +36,46 @@ class PhoneValidationTest extends Tester\TestCase
 		$field = $this->createControl();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BR'])
-			->setValue('016123456');
+			->setValue('016123456')
+			->validate();
 
-		Assert::true($field->validate()->hasErrors());
+		Assert::true($field->hasErrors());
 
 		// Validator with wrong country value.
 		$field = $this->createControl();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL'])
-			->setValue('016123456');
+			->setValue('016123456')
+			->validate();
 
-		Assert::false($field->validate()->hasErrors());
+		Assert::false($field->hasErrors());
 
 		// Validator with multiple country values, one correct.
 		$field = $this->createControl();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BE', 'NL'])
-			->setValue('016123456');
+			->setValue('016123456')
+			->validate();
 
-		Assert::true($field->validate()->hasErrors());
+		Assert::true($field->hasErrors());
 
 		// Validator with multiple country values, value correct for second country in list.
 		$field = $this->createControl();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL', 'BE'])
-			->setValue('016123456');
+			->setValue('016123456')
+			->validate();
 
-		Assert::true($field->validate()->hasErrors());
+		Assert::true($field->hasErrors());
 
 		// Validator with multiple wrong country values
 		$field = $this->createControl();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL', 'DE'])
-			->setValue('016123456');
+			->setValue('016123456')
+			->validate();
 
-		Assert::false($field->validate()->hasErrors());
+		Assert::false($field->hasErrors());
 	}
 
 	/**
