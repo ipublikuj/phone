@@ -1,6 +1,7 @@
 # Phone
 
 [![Build Status](https://img.shields.io/travis/iPublikuj/phone.svg?style=flat-square)](https://travis-ci.org/iPublikuj/phone)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/iPublikuj/phone.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/phone/?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/iPublikuj/phone.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/phone/?branch=master)
 [![Latest Stable Version](https://img.shields.io/packagist/v/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
 [![Composer Downloads](https://img.shields.io/packagist/dt/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
