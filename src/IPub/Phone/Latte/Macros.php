@@ -74,7 +74,7 @@ class Macros extends MacroSet
 
 		$phone = $arguments[0];
 		$country = (isset($arguments[1]) && !empty($arguments[1])) ? strtoupper($arguments[1]) : NULL;
-		$format = (isset($arguments[2]) && !empty($arguments[2])) ? $arguments[2] : NULL;
+		$format = (isset($arguments[2]) && !empty($arguments[2])) ? $arguments[2] : Phone\Phone::FORMAT_INTERNATIONAL;
 
 		if (!self::isPhoneCountry($country)) {
 			$format = (int) $country;
