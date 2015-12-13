@@ -162,10 +162,7 @@ class PhoneValidationTest extends Tester\TestCase
 
 		// Create form
 		$form = new Forms\Form;
-		// Create form control
-		$control = new Forms\Controls\TextInput;
-		// Add form control to form
-		$form->addComponent($control, 'phone');
+
 		// Create form control
 		$control = new Forms\Controls\SelectBox;
 		$control->setItems([
@@ -177,6 +174,11 @@ class PhoneValidationTest extends Tester\TestCase
 		]);
 		// Add form control to form
 		$form->addComponent($control, 'phone_country');
+
+		// Create form control
+		$control = new Forms\Controls\TextInput;
+		// Add form control to form
+		$form->addComponent($control, 'phone');
 
 		return $control;
 	}
