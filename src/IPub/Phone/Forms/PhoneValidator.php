@@ -35,11 +35,14 @@ class PhoneValidator
 	 * @param array|NULL $params
 	 *
 	 * @return bool
+	 *
+	 * @throws Exceptions\InvalidParameterException
+	 * @throws Exceptions\NoValidCountryFoundException
 	 */
 	public static function validatePhone(Forms\IControl $control, $params = [])
 	{
 		if (!$control instanceof Forms\Controls\TextInput) {
-
+			throw new Exceptions\InvalidArgumentException('This validator could be used only on text field. You used it on: "'. get_class($control) .'"');
 		}
 
 		$params = $params === NULL ? [] : $params;
