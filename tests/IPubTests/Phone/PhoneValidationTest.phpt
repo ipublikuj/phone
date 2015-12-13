@@ -16,6 +16,7 @@
 namespace IPubTests\Phone;
 
 use Nette;
+use Nette\Forms;
 
 use Tester;
 use Tester\Assert;
@@ -47,36 +48,51 @@ class PhoneValidationTest extends Tester\TestCase
 		$this->phoneNumberUtil = $dic->getService('phone.utils');
 	}
 
-	public function testGravatarUrlWithDefaultOptions()
+	public function testValidatePhoneWithDefaultCountryNoType()
 	{
-		Assert::equal('http://www.gravatar.com/avatar/aabfda88704a1ab55db46d4116442222?s=80&r=g&d=mm', $this->gravatar->buildUrl('john.doe@ipublikuj.eu'));
-	}
+		// Validator with correct country value.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BR'])
+			->setValue('016123456');
 
-	public function testGravatarSecureUrlWithDefaultOptions()
-	{
-		$this->gravatar->enableSecureImages();
+		Assert::true($field->validate()->hasErrors());
 
-		Assert::equal('https://secure.gravatar.com/avatar/aabfda88704a1ab55db46d4116442222?s=80&r=g&d=mm', $this->gravatar->buildUrl('john.doe@ipublikuj.eu', null));
-	}
+		// Validator with wrong country value.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL'])
+			->setValue('016123456');
 
-	public function testGravatarInitializedWithOptions()
-	{
-		$this->gravatar
-			->setSize(20)
-			->setMaxRating('g')
-			->setDefaultImage('mm');
+		Assert::false($field->validate()->hasErrors());
 
-		Assert::equal('http://www.gravatar.com/avatar/aabfda88704a1ab55db46d4116442222?s=20&r=g&d=mm', $this->gravatar->buildUrl('john.doe@ipublikuj.eu'));
-	}
+		// Validator with multiple country values, one correct.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BE', 'NL'])
+			->setValue('016123456');
 
-	public function testGravatarExists()
-	{
-		Assert::false($this->gravatar->exists('fake.email@ipublikuj.eu'));
-		Assert::true($this->gravatar->exists('adam.kadlec@gmail.com'));
+		Assert::true($field->validate()->hasErrors());
+
+		// Validator with multiple country values, value correct for second country in list.
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL', 'BE'])
+			->setValue('016123456');
+
+		Assert::true($field->validate()->hasErrors());
+
+		// Validator with multiple wrong country values
+		$field = $this->createControl();
+		$field
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['NL', 'DE'])
+			->setValue('016123456');
+
+		Assert::false($field->validate()->hasErrors());
 	}
 
 	/**
-	 * @return \SystemContainer|\Nette\DI\Container
+	 * @return Nette\DI\Container
 	 */
 	protected function createContainer()
 	{
@@ -89,6 +105,79 @@ class PhoneValidationTest extends Tester\TestCase
 
 		return $config->createContainer();
 	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @return Forms\Controls\TextInput
+	 */
+	private function createControl($data = [])
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_FILES = [];
+		$_POST = $data;
+
+		// Create form
+		$form = new Forms\Form;
+		// Create form control
+		$control = new Forms\Controls\TextInput;
+		// Add form control to form
+		$form->addComponent($control, 'phone');
+
+		return $control;
+	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @return Forms\Controls\SelectBox
+	 */
+	private function createInvalidControl($data = [])
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_FILES = [];
+		$_POST = $data;
+
+		// Create form
+		$form = new Forms\Form;
+		// Create form control
+		$control = new Forms\Controls\SelectBox;
+		// Add form control to form
+		$form->addComponent($control, 'phone');
+
+		return $control;
+	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @return Forms\Controls\TextInput
+	 */
+	private function createControls($data = [])
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_FILES = [];
+		$_POST = $data;
+
+		// Create form
+		$form = new Forms\Form;
+		// Create form control
+		$control = new Forms\Controls\TextInput;
+		// Add form control to form
+		$form->addComponent($control, 'phone');
+		// Create form control
+		$control = new Forms\Controls\SelectBox;
+		$control->setItems([
+			'CZ' => 'Czech Republic',
+			'SK' => 'Slovakia',
+			'GB' => 'Great Britain',
+		]);
+		// Add form control to form
+		$form->addComponent($control, 'phone_country');
+
+		return $control;
+	}
+
 }
 
 \run(new PhoneValidationTest());
