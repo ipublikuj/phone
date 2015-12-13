@@ -1,0 +1,2 @@
+phone:
+	defaultFormat	: \libphonenumber\PhoneNumberFormat::INTERNATIONAL
