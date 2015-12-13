@@ -29,6 +29,18 @@ require __DIR__ . '/../bootstrap.php';
 
 class ExtensionTest extends Tester\TestCase
 {
+	public function testFunctional()
+	{
+		$dic = $this->createContainer();
+
+		Assert::true($dic->getService('phone.phone') instanceof IPub\Phone\Phone);
+		Assert::true($dic->getService('phone.libphone.utils') instanceof libphonenumber\PhoneNumberUtil);
+		Assert::true($dic->getService('phone.libphone.geoCoder') instanceof libphonenumber\geocoding\PhoneNumberOfflineGeocoder);
+		Assert::true($dic->getService('phone.libphone.shortNumber') instanceof libphonenumber\ShortNumberInfo);
+		Assert::true($dic->getService('phone.libphone.mapper.carrier') instanceof libphonenumber\PhoneNumberToCarrierMapper);
+		Assert::true($dic->getService('phone.libphone.mapper.timezone') instanceof libphonenumber\PhoneNumberToTimeZonesMapper);
+	}
+
 	/**
 	 * @return Nette\DI\Container
 	 */
@@ -42,18 +54,6 @@ class ExtensionTest extends Tester\TestCase
 		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
 
 		return $config->createContainer();
-	}
-
-	public function testFunctional()
-	{
-		$dic = $this->createContainer();
-
-		Assert::true($dic->getService('phone.phone') instanceof IPub\Phone\Phone);
-		Assert::true($dic->getService('phone.libphone.utils') instanceof libphonenumber\PhoneNumberUtil);
-		Assert::true($dic->getService('phone.libphone.geoCoder') instanceof libphonenumber\geocoding\PhoneNumberOfflineGeocoder);
-		Assert::true($dic->getService('phone.libphone.shortNumber') instanceof libphonenumber\ShortNumberInfo);
-		Assert::true($dic->getService('phone.libphone.mapper.carrier') instanceof libphonenumber\PhoneNumberToCarrierMapper);
-		Assert::true($dic->getService('phone.libphone.mapper.timezone') instanceof libphonenumber\PhoneNumberToTimeZonesMapper);
 	}
 }
 
