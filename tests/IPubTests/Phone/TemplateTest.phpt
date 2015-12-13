@@ -62,6 +62,11 @@ class TemplateTest extends Tester\TestCase
 		$dq = Tester\DomQuery::fromHtml((string) $response->getSource());
 
 		Assert::true($dq->has('div[id*="value"]'));
+
+		// Get all styles element
+		$container = $dq->find('div[id*="value"]');
+
+		Assert::equal('+32 16 12 34 56', (string) $container[0]);
 	}
 
 	public function testTemplateMacro()
@@ -77,6 +82,11 @@ class TemplateTest extends Tester\TestCase
 		$dq = Tester\DomQuery::fromHtml((string) $response->getSource());
 
 		Assert::true($dq->has('div[id*="value"]'));
+
+		// Get all styles element
+		$container = $dq->find('div[id*="value"]');
+
+		Assert::equal('+32 16 12 34 56', (string) $container[0]);
 	}
 
 	/**
@@ -103,6 +113,7 @@ class TemplateTest extends Tester\TestCase
 		Phone\DI\PhoneExtension::register($config);
 
 		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
+		$config->addConfig(__DIR__ . '/files/presenters.neon', $config::NONE);
 
 		return $config->createContainer();
 	}
