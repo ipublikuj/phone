@@ -1,2 +1,2 @@
 phone:
-
+	defaultFormat	: \IPub\Phone\Phone::FORMAT_INTERNATIONAL

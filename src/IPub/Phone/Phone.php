@@ -77,7 +77,7 @@ class Phone extends Nette\Object
 		libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder,
 		libphonenumber\PhoneNumberToCarrierMapper $carrierMapper,
 		libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper,
-		Localization\ITranslator $translator
+		Localization\ITranslator $translator = NULL
 	) {
 		// Lib phone library utils
 		$this->phoneNumberUtil = $phoneNumberUtil;

@@ -34,7 +34,7 @@ class ExtensionTest extends Tester\TestCase
 	 */
 	protected function createContainer()
 	{
-		$config = new Nette\Configurator();
+		$config = new Nette\Configurator;
 		$config->setTempDirectory(TEMP_DIR);
 
 		Phone\DI\PhoneExtension::register($config);
