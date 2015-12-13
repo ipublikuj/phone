@@ -71,6 +71,72 @@ class PhoneHelpersTest extends Tester\TestCase
 		Assert::false($this->phone->isValid('016123456', 'NL', Phone\Phone::TYPE_MOBILE));
 	}
 
+	public function testFormatPhoneWithDefaultCountry()
+	{
+		// Format with correct country value and in default format
+		Assert::equal('+32 16 12 34 56', $this->phone->format('016123456', 'be'));
+
+		// Format with correct country value and in international format
+		Assert::equal('+32 16 12 34 56', $this->phone->format('016123456', 'BE', Phone\Phone::FORMAT_INTERNATIONAL));
+
+		// Format with correct country value and in national format
+		Assert::equal('016 12 34 56', $this->phone->format('016123456', 'BE', Phone\Phone::FORMAT_NATIONAL));
+	}
+
+	/**
+	 * @throws \IPub\Phone\Exceptions\NoValidCountryFoundException
+	 */
+	public function testFormatPhoneWithWrongCountry()
+	{
+		// Format with invalid country string
+		$this->phone->format('016123456', 'tst');
+
+		// Format with invalid country string
+		$this->phone->format('016123456', 'belgium');
+
+		// Format with invalid country string
+		$this->phone->format('016123456', 'BEL');
+	}
+
+	/**
+	 * @throws \IPub\Phone\Exceptions\NoValidPhoneException
+	 */
+	public function testFormatPhoneWithInvalidNumber()
+	{
+		// Format with invalid country value
+		$this->phone->format('0499123456', 'NL');
+
+		// Format with invalid country value
+		$this->phone->format('016123456', 'NL');
+	}
+
+	public function testGeoLocatePhone()
+	{
+		// Geolocate with correct country value
+		Assert::equal('Leuven', $this->phone->getLocation('016123456', 'be'));
+
+		// Geolocate with correct country value
+		Assert::equal('Belgium', $this->phone->getLocation('0499123456', 'be'));
+	}
+
+	public function testPhoneGetCarrier()
+	{
+		// Get unknown carrier with correct country value
+		Assert::equal('Mobistar', $this->phone->getCarrier('016123456', 'be'));
+
+		// Get carrier with correct country value
+		Assert::equal('', $this->phone->getLocation('0499123456', 'be'));
+	}
+
+	public function testPhoneGetTimeZones()
+	{
+		// Get unknown carrier with correct country value
+		Assert::equal(['Europe/Brussels'], $this->phone->getTimeZones('016123456', 'be'));
+
+		// Get carrier with correct country value
+		Assert::equal(['Europe/Brussels'], $this->phone->getTimeZones('0499123456', 'be'));
+	}
+
 	/**
 	 * @return Nette\DI\Container
 	 */
