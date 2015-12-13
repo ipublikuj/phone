@@ -30,7 +30,7 @@ require __DIR__ . '/../bootstrap.php';
 class ExtensionTest extends Tester\TestCase
 {
 	/**
-	 * @return \SystemContainer|\Nette\DI\Container
+	 * @return Nette\DI\Container
 	 */
 	protected function createContainer()
 	{
