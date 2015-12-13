@@ -30,24 +30,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class PhoneValidationTest extends Tester\TestCase
 {
-	/**
-	 * @var libphonenumber\PhoneNumberUtil
-	 */
-	private $phoneNumberUtil;
-
-	/**
-	 * Set up
-	 */
-	public function setUp()
-	{
-		parent::setUp();
-
-		$dic = $this->createContainer();
-
-		// Get extension services
-		$this->phoneNumberUtil = $dic->getService('phone.utils');
-	}
-
 	public function testValidatePhoneWithDefaultCountryNoType()
 	{
 		// Validator with correct country value.
@@ -89,21 +71,6 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456');
 
 		Assert::false($field->validate()->hasErrors());
-	}
-
-	/**
-	 * @return Nette\DI\Container
-	 */
-	protected function createContainer()
-	{
-		$config = new Nette\Configurator();
-		$config->setTempDirectory(TEMP_DIR);
-
-		Phone\DI\PhoneExtension::register($config);
-
-		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
-
-		return $config->createContainer();
 	}
 
 	/**
