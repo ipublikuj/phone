@@ -39,7 +39,7 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456')
 			->validate();
 
-		Assert::true($field->hasErrors());
+		Assert::false($field->hasErrors());
 
 		// Validator with wrong country value.
 		$field = $this->createControl();
@@ -48,7 +48,7 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456')
 			->validate();
 
-		Assert::false($field->hasErrors());
+		Assert::true($field->hasErrors());
 
 		// Validator with multiple country values, one correct.
 		$field = $this->createControl();
@@ -57,7 +57,7 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456')
 			->validate();
 
-		Assert::true($field->hasErrors());
+		Assert::false($field->hasErrors());
 
 		// Validator with multiple country values, value correct for second country in list.
 		$field = $this->createControl();
@@ -66,7 +66,7 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456')
 			->validate();
 
-		Assert::true($field->hasErrors());
+		Assert::false($field->hasErrors());
 
 		// Validator with multiple wrong country values
 		$field = $this->createControl();
@@ -75,7 +75,7 @@ class PhoneValidationTest extends Tester\TestCase
 			->setValue('016123456')
 			->validate();
 
-		Assert::false($field->hasErrors());
+		Assert::true($field->hasErrors());
 	}
 
 	/**
