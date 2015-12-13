@@ -30,31 +30,31 @@ class PhoneExtension extends DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('libphone.utils'))
-			->setClass(libphonenumber\PhoneNumberUtil::class)
-			->setFactory(libphonenumber\PhoneNumberUtil::class .'::getInstance');
+			->setClass('libphonenumber\PhoneNumberUtil')
+			->setFactory('libphonenumber\PhoneNumberUtil::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.geoCoder'))
-			->setClass(libphonenumber\geocoding\PhoneNumberOfflineGeocoder::class)
-			->setFactory(libphonenumber\geocoding\PhoneNumberOfflineGeocoder::class .'::getInstance');
+			->setClass('libphonenumber\geocoding\PhoneNumberOfflineGeocoder')
+			->setFactory('libphonenumber\geocoding\PhoneNumberOfflineGeocoder::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.shortNumber'))
-			->setClass(libphonenumber\ShortNumberInfo::class)
-			->setFactory(libphonenumber\ShortNumberInfo::class .'::getInstance');
+			->setClass('libphonenumber\ShortNumberInfo')
+			->setFactory('libphonenumber\ShortNumberInfo::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.mapper.carrier'))
-			->setClass(libphonenumber\PhoneNumberToCarrierMapper::class)
-			->setFactory(libphonenumber\PhoneNumberToCarrierMapper::class .'::getInstance');
+			->setClass('libphonenumber\PhoneNumberToCarrierMapper')
+			->setFactory('libphonenumber\PhoneNumberToCarrierMapper::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.mapper.timezone'))
-			->setClass(libphonenumber\PhoneNumberToTimeZonesMapper::class)
-			->setFactory(libphonenumber\PhoneNumberToTimeZonesMapper::class .'::getInstance');
+			->setClass('libphonenumber\PhoneNumberToTimeZonesMapper')
+			->setFactory('libphonenumber\PhoneNumberToTimeZonesMapper::getInstance');
 
 		$builder->addDefinition($this->prefix('phone'))
-			->setClass(Phone\Phone::class);
+			->setClass(Phone\Phone::CLASSNAME);
 
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
-			->setClass('IPub\Phone\Templating\Helpers')
+			->setClass(Phone\Templating\Helpers::CLASSNAME)
 			->setFactory($this->prefix('@phone') . '::createTemplateHelpers')
 			->setInject(FALSE);
 	}

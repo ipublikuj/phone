@@ -25,6 +25,8 @@ use IPub\Phone\Exceptions;
 
 class Phone extends Nette\Object
 {
+	const CLASSNAME = __CLASS__;
+
 	/**
 	 * Define phone number types
 	 */

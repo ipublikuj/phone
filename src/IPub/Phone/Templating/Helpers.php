@@ -23,6 +23,8 @@ use IPub\Phone;
 
 class Helpers extends Nette\Object
 {
+	const CLASSNAME = __CLASS__;
+
 	/**
 	 * @var Phone\Phone
 	 */
