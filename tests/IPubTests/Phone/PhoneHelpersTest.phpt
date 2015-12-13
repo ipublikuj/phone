@@ -122,10 +122,10 @@ class PhoneHelpersTest extends Tester\TestCase
 	public function testPhoneGetCarrier()
 	{
 		// Get unknown carrier with correct country value
-		Assert::equal('Mobistar', $this->phone->getCarrier('016123456', 'be'));
+		Assert::equal('', $this->phone->getCarrier('016123456', 'be'));
 
 		// Get carrier with correct country value
-		Assert::equal('', $this->phone->getLocation('0499123456', 'be'));
+		Assert::equal('Mobistar', $this->phone->getLocation('0499123456', 'be'));
 	}
 
 	public function testPhoneGetTimeZones()
