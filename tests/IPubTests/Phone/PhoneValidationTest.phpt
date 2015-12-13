@@ -35,7 +35,7 @@ class PhoneValidationTest extends Tester\TestCase
 		// Validator with correct country value.
 		$field = $this->createControl();
 		$field
-			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BR'])
+			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone', ['BE'])
 			->setValue('016123456')
 			->validate();
 
