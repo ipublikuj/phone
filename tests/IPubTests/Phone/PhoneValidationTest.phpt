@@ -81,10 +81,12 @@ class PhoneValidationTest extends Tester\TestCase
 	public function testValidatePhoneWithCountryField()
 	{
 		// Validator with correct country field supplied.
-		$field = $this->createControl();
+		$field = $this->createControls();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone')
 			->setValue('016123456');
+
+		$form = $field->getForm();
 
 		$countryField = $field->getForm()->getComponent('phone_country');
 		$countryField
@@ -93,7 +95,7 @@ class PhoneValidationTest extends Tester\TestCase
 		Assert::false($field->hasErrors());
 
 		// Validator with wrong country field supplied.
-		$field = $this->createControl();
+		$field = $this->createControls();
 		$field
 			->addRule(Phone\Forms\PhoneValidator::PHONE, 'Invalid phone')
 			->setValue('016123456');
