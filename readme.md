@@ -5,6 +5,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/iPublikuj/phone.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/phone/?branch=master)
 [![Latest Stable Version](https://img.shields.io/packagist/v/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
 [![Composer Downloads](https://img.shields.io/packagist/dt/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
+[![License](https://img.shields.io/packagist/l/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
 
 Phone helper & validator for [Nette Framework](http://nette.org/)
 
