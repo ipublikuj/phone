@@ -14,10 +14,12 @@ define('TEMP_DIR', __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(seriali
 Tester\Helpers::purge(TEMP_DIR);
 \Tracy\Debugger::$logDirectory = TEMP_DIR;
 
-function id($val) {
+function id($val)
+{
 	return $val;
 }
 
-function run(Tester\TestCase $testCase) {
+function run(Tester\TestCase $testCase)
+{
 	$testCase->run(isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : NULL);
 }

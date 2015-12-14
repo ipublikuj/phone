@@ -3,14 +3,14 @@
  * Test: IPub\Phone\Template
  * @testCase
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	Tests
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     Tests
+ * @since          1.0
  *
- * @date		30.01.15
+ * @date           30.01.15
  */
 
 namespace IPubTests\Phone;
@@ -29,6 +29,14 @@ use IPub\Phone;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * Phone number template helpers and macros tests
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Tests
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class TemplateTest extends Tester\TestCase
 {
 	/**
@@ -55,7 +63,7 @@ class TemplateTest extends Tester\TestCase
 		$presenter = $this->createPresenter();
 
 		// Create GET request
-		$request = new Application\Request('Test', 'GET', array('action' => 'useHelper'));
+		$request = new Application\Request('Test', 'GET', ['action' => 'useHelper']);
 		// & fire presenter & catch response
 		$response = $presenter->run($request);
 
@@ -75,7 +83,7 @@ class TemplateTest extends Tester\TestCase
 		$presenter = $this->createPresenter();
 
 		// Create GET request
-		$request = new Application\Request('Test', 'GET', array('action' => 'useMacro'));
+		$request = new Application\Request('Test', 'GET', ['action' => 'useMacro']);
 		// & fire presenter & catch response
 		$response = $presenter->run($request);
 
@@ -124,13 +132,13 @@ class TestPresenter extends UI\Presenter
 	public function renderUseHelper()
 	{
 		// Set template for template helper testing
-		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR .'templates'. DIRECTORY_SEPARATOR .'helper.latte');
+		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'helper.latte');
 	}
 
 	public function renderUseMacro()
 	{
 		// Set template for template macro testing
-		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR .'templates'. DIRECTORY_SEPARATOR .'macro.latte');
+		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'macro.latte');
 	}
 }
 

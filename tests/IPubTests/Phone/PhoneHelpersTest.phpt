@@ -3,14 +3,14 @@
  * Test: IPub\Phone\Validator
  * @testCase
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	Tests
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     Tests
+ * @since          1.0
  *
- * @date		13.12.15
+ * @date           13.12.15
  */
 
 namespace IPubTests\Phone;
@@ -27,6 +27,14 @@ use libphonenumber;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * Phone number helpers tests
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Tests
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class PhoneHelpersTest extends Tester\TestCase
 {
 	/**
