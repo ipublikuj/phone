@@ -58,7 +58,7 @@ class PhoneExtension extends DI\CompilerExtension
 			->setFactory('libphonenumber\PhoneNumberToTimeZonesMapper::getInstance');
 
 		$builder->addDefinition($this->prefix('phone'))
-			->setClass(Phone\Phone::CLASSNAME);
+			->setClass(Phone\Phone::CLASS_NAME);
 
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
