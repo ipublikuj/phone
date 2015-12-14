@@ -149,6 +149,19 @@ Method for getting location info `getLocation` has additional params:
 * `$locale` - the language code for which the description should be written. If you are using translator which could return locale eg. en_US, helper will automatically use this translator.
 * `$userCountry` - the region code for a given user. This region will be omitted from the description if the phone number comes from this region. It is a two-letter uppercase ISO country code as defined by ISO 3166-1.
 
+### Using trait
+
+If you are using PHP ver. 4.0 and higher, you can use simple trait in your presenters and components, to inject helper service:
+
+```php
+<?php
+
+class BasePresenter extends Nette\Application\UI\Presenter
+{
+	use IPub\Phone\TPhone;
+}
+```
+
 ## Using in Latte
 
 In Latte templates you can use macros and helpers for formatting phone numbers
@@ -159,7 +172,7 @@ In Latte templates you can use macros and helpers for formatting phone numbers
 </p>
 ```
 
-and it will render output like:
+and it will create output like:
 
 ```html
 <p>
@@ -175,7 +188,7 @@ And if you need to use helper, you can do it this way:
 </p>
 ```
 
-and it will render output like:
+and it will create output like:
 
 ```html
 <p>
