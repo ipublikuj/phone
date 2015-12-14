@@ -221,7 +221,7 @@ class PhoneValidator
 	 */
 	protected static function constructPhoneTypeConstant($type)
 	{
-		return '\Phone\Phone::TYPE_' . $type;
+		return '\IPub\Phone\Phone::TYPE_' . $type;
 	}
 
 	/**
