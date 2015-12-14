@@ -199,7 +199,7 @@ class PhoneValidator
 
 		// Transform valid types to their namespaced class constant
 		$allowedTypes = array_reduce($untransformedTypes, function (array $result, $item) {
-			$result[$item] = constant('\libphonenumber\PhoneNumberType::' . self::constructPhoneTypeConstant($item));
+			$result[$item] = constant('\libphonenumber\PhoneNumberType::' . constant(self::constructPhoneTypeConstant($item)));
 
 			return $result;
 		}, []);
