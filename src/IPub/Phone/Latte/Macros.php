@@ -2,14 +2,14 @@
 /**
  * Macros.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	Latte
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     Latte
+ * @since          1.0
  *
- * @date		12.12.15
+ * @date           12.12.15
  */
 
 namespace IPub\Phone\Latte;
@@ -25,10 +25,27 @@ use Latte\Macros\MacroSet;
 use IPub;
 use IPub\Phone;
 
+/**
+ * Phone number Latte macros
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Latte
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class Macros extends MacroSet
 {
 	/**
+	 * Define class name
+	 */
+	const CLASS_NAME = __CLASS__;
+
+	/**
 	 * Register latte macros
+	 *
+	 * @param Compiler $compiler
+	 *
+	 * @return static
 	 */
 	public static function install(Compiler $compiler)
 	{
@@ -58,7 +75,7 @@ class Macros extends MacroSet
 			throw new Latte\CompileException("Please provide phone number.");
 		}
 
-		return $writer->write('echo %escape($template->getPhoneNumberService()->format("'. $arguments['phone'] .'", "'. $arguments['country'] .'", '. $arguments['format'] .'))');
+		return $writer->write('echo %escape($template->getPhoneNumberService()->format("' . $arguments['phone'] . '", "' . $arguments['country'] . '", ' . $arguments['format'] . '))');
 	}
 
 	/**
@@ -86,9 +103,9 @@ class Macros extends MacroSet
 		}
 
 		return [
-			'phone'		=> (string) $phone,
-			'country'	=> (string) $country,
-			'format'	=> (int) $format,
+			'phone'   => (string) $phone,
+			'country' => (string) $country,
+			'format'  => (int) $format,
 		];
 	}
 

@@ -2,14 +2,14 @@
 /**
  * PhoneValidator.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	common
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     Forms
+ * @since          1.0
  *
- * @date		12.12.15
+ * @date           12.12.15
  */
 
 namespace IPub\Phone\Forms;
@@ -23,8 +23,21 @@ use libphonenumber\PhoneNumberUtil;
 use IPub\Phone;
 use IPub\Phone\Exceptions;
 
+/**
+ * Phone number form field validator
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Forms
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class PhoneValidator
 {
+	/**
+	 * Define class name
+	 */
+	const CLASS_NAME = __CLASS__;
+
 	/**
 	 * Define validator calling constant
 	 */
@@ -42,7 +55,7 @@ class PhoneValidator
 	public static function validatePhone(Forms\IControl $control, $params = [])
 	{
 		if (!$control instanceof Forms\Controls\TextInput) {
-			throw new Exceptions\InvalidArgumentException('This validator could be used only on text field. You used it on: "'. get_class($control) .'"');
+			throw new Exceptions\InvalidArgumentException('This validator could be used only on text field. You used it on: "' . get_class($control) . '"');
 		}
 
 		$params = $params === NULL ? [] : $params;
@@ -56,7 +69,7 @@ class PhoneValidator
 		$params = array_map('strtoupper', $params);
 
 		// Check if phone country field exists...
-		if ($countryField = $container->getComponent($control->getName() .'_country', FALSE)) {
+		if ($countryField = $container->getComponent($control->getName() . '_country', FALSE)) {
 			// ...use selected value as a list of allowed countries
 			$selectedCountry = $countryField->getValue();
 
@@ -142,7 +155,7 @@ class PhoneValidator
 	}
 
 	/**
-	 * Sets the countries to validate against.
+	 * Sets the countries to validate against
 	 *
 	 * @param array $params
 	 *
@@ -156,7 +169,7 @@ class PhoneValidator
 		if (in_array('AUTO', $params)) {
 			return ['ZZ'];
 
-		// Else use the supplied parameters.
+			// Else use the supplied parameters.
 		} else {
 			$allowedCountries = array_filter($params, function ($item) {
 				return self::isPhoneCountry($item);
@@ -226,7 +239,7 @@ class PhoneValidator
 		$leftovers = array_diff($params, $allowedCountries, $allowedTypes, ['AUTO']);
 
 		if (!empty($leftovers)) {
-			throw new Exceptions\InvalidParameterException('Invalid parameters were sent to the validator: "'. implode(', ', $leftovers) .'"');
+			throw new Exceptions\InvalidParameterException('Invalid parameters were sent to the validator: "' . implode(', ', $leftovers) . '"');
 		}
 	}
 }

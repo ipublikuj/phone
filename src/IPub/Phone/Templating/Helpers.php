@@ -2,14 +2,14 @@
 /**
  * Helpers.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	Templating
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     Templating
+ * @since          1.0
  *
- * @date		12.12.15
+ * @date           12.12.15
  */
 
 namespace IPub\Phone\Templating;
@@ -21,9 +21,20 @@ use Latte\Engine;
 use IPub;
 use IPub\Phone;
 
+/**
+ * Phone number Latte helpers
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Latte
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class Helpers extends Nette\Object
 {
-	const CLASSNAME = __CLASS__;
+	/**
+	 * Define class name
+	 */
+	const CLASS_NAME = __CLASS__;
 
 	/**
 	 * @var Phone\Phone

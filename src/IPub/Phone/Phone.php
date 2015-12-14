@@ -23,9 +23,17 @@ use libphonenumber\PhoneNumberFormat;
 use IPub;
 use IPub\Phone\Exceptions;
 
+/**
+ * Phone number helpers
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     common
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class Phone extends Nette\Object
 {
-	const CLASSNAME = __CLASS__;
+	const CLASS_NAME = __CLASS__;
 
 	/**
 	 * Define phone number types

@@ -2,14 +2,14 @@
 /**
  * PhoneExtension.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	DI
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     DI
+ * @since          1.0
  *
- * @date		12.12.15
+ * @date           12.12.15
  */
 
 namespace IPub\Phone\DI;
@@ -23,6 +23,14 @@ use IPub\Phone;
 
 use libphonenumber;
 
+/**
+ * Phone extension container
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     DI
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class PhoneExtension extends DI\CompilerExtension
 {
 	public function loadConfiguration()
@@ -54,7 +62,7 @@ class PhoneExtension extends DI\CompilerExtension
 
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
-			->setClass(Phone\Templating\Helpers::CLASSNAME)
+			->setClass(Phone\Templating\Helpers::CLASS_NAME)
 			->setFactory($this->prefix('@phone') . '::createTemplateHelpers')
 			->setInject(FALSE);
 	}
