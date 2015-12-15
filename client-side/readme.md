@@ -8,7 +8,7 @@ To enable live validation on your forms, you need to include JS files from this 
 
 ```html
 <!DOCTYPE html>
-<html class="uk-height-1-1 uk-notouch" lang="en">
+<html lang="en">
 <head>
     // ...
     <script src="path-to-file/ipub.phone.js" type="text/javascript">
