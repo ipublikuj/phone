@@ -6,6 +6,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
 [![Composer Downloads](https://img.shields.io/packagist/dt/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
 [![License](https://img.shields.io/packagist/l/ipub/phone.svg?style=flat-square)](https://packagist.org/packages/ipub/phone)
+[![Dependency Status](https://img.shields.io/versioneye/d/ipub/phone.svg?style=flat-square)](https://www.versioneye.com/user/projects/567061391079970030000384)
 
 Phone helper & validator for [Nette Framework](http://nette.org/)
 
