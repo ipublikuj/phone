@@ -41,7 +41,7 @@ class PhoneValidator
 	/**
 	 * Define validator calling constant
 	 */
-	const PHONE = '\IPub\Phone\Forms\PhoneValidator::validatePhone';
+	const PHONE = 'IPub\Phone\Forms\PhoneValidator::validatePhone';
 
 	/**
 	 * @param Forms\IControl $control
@@ -169,7 +169,7 @@ class PhoneValidator
 		if (in_array('AUTO', $params)) {
 			return ['ZZ'];
 
-			// Else use the supplied parameters.
+		// Else use the supplied parameters
 		} else {
 			$allowedCountries = array_filter($params, function ($item) {
 				return self::isPhoneCountry($item);

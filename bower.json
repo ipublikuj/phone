@@ -1,0 +1,16 @@
+{
+	"name": "ipub/phone",
+	"main": [
+		"client-side/css/ipub.phone.css",
+		"client-side/css/ipub.phone.library.js"
+	],
+	"ignore": [
+		"src",
+		"tests",
+		".gitignore",
+		".scrutinizer.yml",
+		".travis.composer.php",
+		".travis.yml",
+		"composer.json"
+	]
+}

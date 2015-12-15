@@ -2,14 +2,14 @@
 /**
  * Phone.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Phone!
- * @subpackage	common
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Phone!
+ * @subpackage     common
+ * @since          1.0
  *
- * @date		12.12.15
+ * @date           12.12.15
  */
 
 namespace IPub\Phone;
@@ -38,17 +38,17 @@ class Phone extends Nette\Object
 	/**
 	 * Define phone number types
 	 */
-	const TYPE_FIXED_LINE	= 'FIXED_LINE';
-	const TYPE_MOBILE		= 'MOBILE';
-	const TYPE_VOIP			= 'VOIP';
-	const TYPE_PAGER		= 'PAGER';
-	const TYPE_EMERGENCY	= 'EMERGENCY';
-	const TYPE_VOICEMAIL	= 'VOICEMAIL';
+	const TYPE_FIXED_LINE = 'FIXED_LINE';
+	const TYPE_MOBILE = 'MOBILE';
+	const TYPE_VOIP = 'VOIP';
+	const TYPE_PAGER = 'PAGER';
+	const TYPE_EMERGENCY = 'EMERGENCY';
+	const TYPE_VOICEMAIL = 'VOICEMAIL';
 
-	const FORMAT_E164			= PhoneNumberFormat::E164;
-	const FORMAT_INTERNATIONAL	= PhoneNumberFormat::INTERNATIONAL;
-	const FORMAT_NATIONAL		= PhoneNumberFormat::NATIONAL;
-	const FORMAT_RFC3966		= PhoneNumberFormat::RFC3966;
+	const FORMAT_E164 = PhoneNumberFormat::E164;
+	const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL;
+	const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
+	const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
 
 	/**
 	 * @var libphonenumber\PhoneNumberUtil
@@ -88,7 +88,8 @@ class Phone extends Nette\Object
 		libphonenumber\PhoneNumberToCarrierMapper $carrierMapper,
 		libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper,
 		Localization\ITranslator $translator = NULL
-	) {
+	)
+	{
 		// Lib phone library utils
 		$this->phoneNumberUtil = $phoneNumberUtil;
 		$this->phoneNumberGeocoder = $phoneNumberGeocoder;
@@ -158,6 +159,7 @@ class Phone extends Nette\Object
 		if ($this->isValid($number, $country)) {
 			// Parse string into phone number
 			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+
 			// Format phone number in given format
 			return $this->phoneNumberUtil->format($phoneNumber, $format);
 
@@ -196,6 +198,7 @@ class Phone extends Nette\Object
 			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
 			// Determine locale
 			$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
+
 			// Get phone number location
 			return $this->phoneNumberGeocoder->getDescriptionForNumber($phoneNumber, $locale, $userCountry);
 
@@ -222,6 +225,7 @@ class Phone extends Nette\Object
 		if ($this->isValid($number, $country)) {
 			// Parse string into phone number
 			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+
 			// Extract carrier name from given phone number
 			return $this->carrierMapper->getNameForNumber($phoneNumber, 'en');
 
@@ -248,6 +252,7 @@ class Phone extends Nette\Object
 		if ($this->isValid($number, $country)) {
 			// Parse string into phone number
 			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+
 			// Parse time zones from given phone number
 			return $this->timeZonesMapper->getTimeZonesForNumber($phoneNumber);
 
@@ -285,7 +290,7 @@ class Phone extends Nette\Object
 			return $country;
 
 		} else {
-			throw new Exceptions\NoValidCountryFoundException('Provided country code "'. $country .'" is not valid. Provide valid country code or AUTO for automatic detection.');
+			throw new Exceptions\NoValidCountryFoundException('Provided country code "' . $country . '" is not valid. Provide valid country code or AUTO for automatic detection.');
 		}
 	}
 
