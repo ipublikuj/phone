@@ -7,7 +7,7 @@
  * @author         Adam Kadlec http://www.ipublikuj.eu
  * @package        iPublikuj:Phone!
  * @subpackage     DI
- * @since          1.0
+ * @since          1.0.0
  *
  * @date           12.12.15
  */

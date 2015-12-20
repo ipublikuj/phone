@@ -1,8 +1,8 @@
 {
 	"name": "ipub/phone",
 	"main": [
-		"client-side/css/ipub.phone.css",
-		"client-side/css/ipub.phone.library.js"
+		"client-side/js/ipub.phone.js",
+		"client-side/js/ipub.phone.library.js"
 	],
 	"ignore": [
 		"src",

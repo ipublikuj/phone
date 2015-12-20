@@ -8,7 +8,7 @@
  * @author         Adam Kadlec http://www.ipublikuj.eu
  * @package        iPublikuj:Phone!
  * @subpackage     Tests
- * @since          1.0
+ * @since          1.0.0
  *
  * @date           13.12.15
  */
@@ -92,7 +92,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * @throws \IPub\Phone\Exceptions\NoValidCountryFoundException
+	 * @throws \IPub\Phone\Exceptions\NoValidCountryException
 	 */
 	public function testFormatPhoneWithWrongCountry()
 	{

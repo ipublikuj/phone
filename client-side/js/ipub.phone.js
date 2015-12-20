@@ -288,5 +288,7 @@
  * @param {string} value
  */
 Nette.validators.IPubPhoneFormsPhoneValidator_validatePhone = function (elem, arg, value) {
+    if (value.trim() == '') return;
+
     return new IPub.Phone.Validator(elem, arg).validate();
 };

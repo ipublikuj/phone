@@ -7,7 +7,7 @@
  * @author         Adam Kadlec http://www.ipublikuj.eu
  * @package        iPublikuj:Phone!
  * @subpackage     common
- * @since          1.0
+ * @since          1.0.0
  *
  * @date           12.12.15
  */
@@ -21,6 +21,7 @@ use libphonenumber;
 use libphonenumber\PhoneNumberFormat;
 
 use IPub;
+use IPub\Phone\Entities;
 use IPub\Phone\Exceptions;
 
 /**
@@ -103,12 +104,60 @@ class Phone extends Nette\Object
 	/**
 	 * @param string $number
 	 * @param string $country
+	 *
+	 * @return Entities\Phone|NULL
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidPhoneException
+	 */
+	public function parse($number, $country = 'AUTO')
+	{
+		// Check if country is valid
+		$country = $this->validateCountry($country);
+
+		try {
+			// Parse string into phone number
+			$parsed = $this->phoneNumberUtil->parse($number, $country);
+
+			return $this->createEntity($parsed);
+
+		} catch (libphonenumber\NumberParseException $ex) {
+			switch($ex->getErrorType())
+			{
+				case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
+					throw new Exceptions\InvalidArgumentException('Missing or invalid default region.');
+					break;
+
+				case libphonenumber\NumberParseException::NOT_A_NUMBER:
+					throw new Exceptions\InvalidArgumentException('The string supplied did not seem to be a phone number.');
+					break;
+
+				case libphonenumber\NumberParseException::TOO_SHORT_AFTER_IDD:
+					throw new Exceptions\InvalidArgumentException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
+					break;
+
+				case libphonenumber\NumberParseException::TOO_SHORT_NSN:
+					throw new Exceptions\InvalidArgumentException('The string supplied is too short to be a phone number.');
+					break;
+
+				case libphonenumber\NumberParseException::TOO_LONG:
+					throw new Exceptions\InvalidArgumentException('The string supplied was too long to parse into phone number.');
+					break;
+			}
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * @param string|Entities\Phone $number
+	 * @param string $country
 	 * @param string|NULL $type
 	 *
 	 * @return bool
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
-	 * @throws Exceptions\NoValidTypeFoundException
+	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidTypeException
 	 */
 	public function isValid($number, $country = 'AUTO', $type = NULL)
 	{
@@ -120,7 +169,7 @@ class Phone extends Nette\Object
 
 		try {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
 
 			if ($type !== NULL && $this->phoneNumberUtil->getNumberType($phoneNumber) !== $type) {
 				return FALSE;
@@ -141,13 +190,13 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
+	 * @param string|Entities\Phone $number
 	 * @param string $country
 	 * @param int $format
 	 *
 	 * @return string
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
 	public function format($number, $country = 'AUTO', $format = self::FORMAT_INTERNATIONAL)
@@ -156,9 +205,9 @@ class Phone extends Nette\Object
 		$country = $this->validateCountry($country);
 
 		// Check if phone number is valid
-		if ($this->isValid($number, $country)) {
+		if ($this->isValid((string) $number, $country)) {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
 
 			// Format phone number in given format
 			return $this->phoneNumberUtil->format($phoneNumber, $format);
@@ -169,14 +218,14 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
+	 * @param string|Entities\Phone $number
 	 * @param string $country
 	 * @param string|NULL $locale
 	 * @param string|NULL $userCountry
 	 *
 	 * @return string
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
 	public function getLocation($number, $country = 'AUTO', $locale = NULL, $userCountry = NULL)
@@ -188,14 +237,14 @@ class Phone extends Nette\Object
 			// Check for valid user country
 			$userCountry = $this->validateCountry($userCountry);
 
-		} catch (Exceptions\NoValidCountryFoundException $ex) {
+		} catch (Exceptions\NoValidCountryException $ex) {
 			$userCountry = NULL;
 		}
 
 		// Check if phone number is valid
-		if ($this->isValid($number, $country)) {
+		if ($this->isValid((string) $number, $country)) {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
 			// Determine locale
 			$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
 
@@ -208,12 +257,12 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
+	 * @param string|Entities\Phone $number
 	 * @param string $country
 	 *
 	 * @return string
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
 	public function getCarrier($number, $country = 'AUTO')
@@ -222,9 +271,9 @@ class Phone extends Nette\Object
 		$country = $this->validateCountry($country);
 
 		// Check if phone number is valid
-		if ($this->isValid($number, $country)) {
+		if ($this->isValid((string) $number, $country)) {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
 
 			// Extract carrier name from given phone number
 			return $this->carrierMapper->getNameForNumber($phoneNumber, 'en');
@@ -235,12 +284,12 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
+	 * @param string|Entities\Phone $number
 	 * @param string $country
 	 *
 	 * @return array
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
 	public function getTimeZones($number, $country = 'AUTO')
@@ -249,9 +298,9 @@ class Phone extends Nette\Object
 		$country = $this->validateCountry($country);
 
 		// Check if phone number is valid
-		if ($this->isValid($number, $country)) {
+		if ($this->isValid((string) $number, $country)) {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
 
 			// Parse time zones from given phone number
 			return $this->timeZonesMapper->getTimeZonesForNumber($phoneNumber);
@@ -259,6 +308,73 @@ class Phone extends Nette\Object
 		} else {
 			throw new Exceptions\NoValidPhoneException('Provided phone number is not valid!');
 		}
+	}
+
+	/**
+	 * Get list of library supported countries
+	 *
+	 * @return array
+	 */
+	public function getSupportedCountries()
+	{
+		return $this->phoneNumberUtil->getSupportedRegions();
+	}
+
+	/**
+	 * Get dialing country code for provided country
+	 *
+	 * @param string $country
+	 *
+	 * @return int
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 */
+	public function getCountryCodeForCountry($country)
+	{
+		// Check if country is valid
+		$country = $this->validateCountry($country);
+
+		return $this->phoneNumberUtil->getCountryCodeForRegion($country);
+	}
+
+	/**
+	 * Get example country national number
+	 *
+	 * @param $country
+	 *
+	 * @return string
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 */
+	public function getExampleNationalNumber($country)
+	{
+		// Check if country is valid
+		$country = $this->validateCountry($country);
+
+		// Create example number
+		$number = $this->phoneNumberUtil->getExampleNumber($country);
+
+		return $this->phoneNumberUtil->format($number, PhoneNumberFormat::NATIONAL);
+	}
+
+	/**
+	 * Get example country international number
+	 *
+	 * @param $country
+	 *
+	 * @return string
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 */
+	public function getExampleInternationalNumber($country)
+	{
+		// Check if country is valid
+		$country = $this->validateCountry($country);
+
+		// Create example number
+		$number = $this->phoneNumberUtil->getExampleNumber($country);
+
+		return $this->phoneNumberUtil->format($number, PhoneNumberFormat::INTERNATIONAL);
 	}
 
 	/**
@@ -274,7 +390,7 @@ class Phone extends Nette\Object
 	 *
 	 * @return string
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 */
 	protected function validateCountry($country)
 	{
@@ -290,7 +406,7 @@ class Phone extends Nette\Object
 			return $country;
 
 		} else {
-			throw new Exceptions\NoValidCountryFoundException('Provided country code "' . $country . '" is not valid. Provide valid country code or AUTO for automatic detection.');
+			throw new Exceptions\NoValidCountryException('Provided country code "' . $country . '" is not valid. Provide valid country code or AUTO for automatic detection.');
 		}
 	}
 
@@ -299,7 +415,7 @@ class Phone extends Nette\Object
 	 *
 	 * @return int
 	 *
-	 * @throws Exceptions\NoValidTypeFoundException
+	 * @throws Exceptions\NoValidTypeException
 	 */
 	protected function validateType($type)
 	{
@@ -309,7 +425,7 @@ class Phone extends Nette\Object
 			return constant($constant);
 
 		} else {
-			throw new Exceptions\NoValidTypeFoundException('Provide valid phone number type.');
+			throw new Exceptions\NoValidTypeException('Provide valid phone number type.');
 		}
 	}
 
@@ -323,5 +439,36 @@ class Phone extends Nette\Object
 	protected function constructPhoneTypeConstant($type)
 	{
 		return '\libphonenumber\PhoneNumberType::' . $type;
+	}
+
+	/**
+	 * @param libphonenumber\PhoneNumber $parsed
+	 *
+	 * @return Entities\Phone
+	 *
+	 * @throws Exceptions\NoValidPhoneException
+	 */
+	protected function createEntity(libphonenumber\PhoneNumber $parsed)
+	{
+		$country = $this->phoneNumberUtil->getRegionCodeForNumber($parsed);
+
+		$phoneNumber = new Entities\Phone($parsed->getNationalNumber(), $parsed->getCountryCode());
+		$phoneNumber
+			->setItalianLeadingZero($parsed->hasItalianLeadingZero())
+			->setType($this->phoneNumberUtil->getNumberType($parsed))
+			->setCarrier($this->getCarrier($parsed->getNationalNumber(), $country))
+			->setTimeZones($this->getTimeZones($parsed->getNationalNumber(), $country))
+			->setCountry($country)
+			->setRawOutput($this->phoneNumberUtil->format($parsed, PhoneNumberFormat::E164));
+
+		if ($parsed->hasExtension()) {
+			$phoneNumber->setExtension($parsed->getExtension());
+		}
+
+		if ($parsed->hasNumberOfLeadingZeros()) {
+			$phoneNumber->setNumberOfLeadingZeros($parsed->getNumberOfLeadingZeros());
+		}
+
+		return $phoneNumber;
 	}
 }

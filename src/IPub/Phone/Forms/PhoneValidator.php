@@ -7,7 +7,7 @@
  * @author         Adam Kadlec http://www.ipublikuj.eu
  * @package        iPublikuj:Phone!
  * @subpackage     Forms
- * @since          1.0
+ * @since          1.0.0
  *
  * @date           12.12.15
  */
@@ -50,7 +50,7 @@ class PhoneValidator
 	 * @return bool
 	 *
 	 * @throws Exceptions\InvalidParameterException
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 */
 	public static function validatePhone(Forms\IControl $control, $params = [])
 	{
@@ -161,7 +161,7 @@ class PhoneValidator
 	 *
 	 * @return array
 	 *
-	 * @throws Exceptions\NoValidCountryFoundException
+	 * @throws Exceptions\NoValidCountryException
 	 */
 	protected static function determineCountries(array $params = [])
 	{
@@ -176,7 +176,7 @@ class PhoneValidator
 			});
 
 			if ($allowedCountries === []) {
-				throw new Exceptions\NoValidCountryFoundException;
+				throw new Exceptions\NoValidCountryException;
 			}
 
 			return $allowedCountries;

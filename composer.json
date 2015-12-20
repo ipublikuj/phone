@@ -3,7 +3,7 @@
 	"type"			: "library",
 	"description"	: "Phone helper & validator for Nette Framework",
 	"keywords"		: ["nette", "phone", "tools", "ipub", "ipublikuj"],
-	"homepage"		: "https://github.com/iPublikuj/gravatar",
+	"homepage"		: "https://github.com/iPublikuj/phone",
 	"license"		: ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 
 	"authors": [
