@@ -340,6 +340,6 @@ class Phone extends Nette\Object
 	 */
 	public function __toString()
 	{
-		return $this->internationalNumber;
+		return (string) $this->internationalNumber;
 	}
 }

@@ -125,23 +125,23 @@ class Phone extends Nette\Object
 			switch($ex->getErrorType())
 			{
 				case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
-					throw new Exceptions\InvalidArgumentException('Missing or invalid default region.');
+					throw new Exceptions\NoValidPhoneException('Missing or invalid default region.');
 					break;
 
 				case libphonenumber\NumberParseException::NOT_A_NUMBER:
-					throw new Exceptions\InvalidArgumentException('The string supplied did not seem to be a phone number.');
+					throw new Exceptions\NoValidPhoneException('The string supplied did not seem to be a phone number.');
 					break;
 
 				case libphonenumber\NumberParseException::TOO_SHORT_AFTER_IDD:
-					throw new Exceptions\InvalidArgumentException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
+					throw new Exceptions\NoValidPhoneException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
 					break;
 
 				case libphonenumber\NumberParseException::TOO_SHORT_NSN:
-					throw new Exceptions\InvalidArgumentException('The string supplied is too short to be a phone number.');
+					throw new Exceptions\NoValidPhoneException('The string supplied is too short to be a phone number.');
 					break;
 
 				case libphonenumber\NumberParseException::TOO_LONG:
-					throw new Exceptions\InvalidArgumentException('The string supplied was too long to parse into phone number.');
+					throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
 					break;
 			}
 		}
