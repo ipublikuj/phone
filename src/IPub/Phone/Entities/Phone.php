@@ -96,25 +96,34 @@ class Phone extends Nette\Object
 	protected $timeZones = [];
 
 	/**
+	 * @param string $rawInput
 	 * @param string $nationalNumber
+	 * @param string $internationalNumber
 	 * @param int $countryCode
+	 * @param string $country
+	 * @param string $type
+	 * @param string $carrierName
 	 */
-	public function __construct($nationalNumber, $countryCode)
-	{
+	public function __construct(
+		$rawInput,
+		$nationalNumber,
+		$internationalNumber,
+		$countryCode,
+		$country,
+		$type,
+		$carrierName
+	) {
+		$this->rawOutput = (string) $rawInput;
+
 		$this->nationalNumber = (string) $nationalNumber;
-		$this->countryCode = (int) $countryCode;
-	}
+		$this->internationalNumber = (string) $internationalNumber;
 
-	/**
-	 * @param int $countryCode
-	 *
-	 * @return $this
-	 */
-	public function setCountryCode($countryCode)
-	{
 		$this->countryCode = (int) $countryCode;
+		$this->country = (string) $country;
 
-		return $this;
+		$this->type = (string) $type;
+
+		$this->carrier = (string) $carrierName;
 	}
 
 	/**
@@ -126,35 +135,11 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
-	 *
-	 * @return $this
-	 */
-	public function setNationalNumber($number)
-	{
-		$this->nationalNumber = (string) $number;
-
-		return $this;
-	}
-
-	/**
 	 * @return string|NULL
 	 */
 	public function getNationalNumber()
 	{
 		return $this->nationalNumber;
-	}
-
-	/**
-	 * @param string $number
-	 *
-	 * @return $this
-	 */
-	public function setInternationalNumber($number)
-	{
-		$this->internationalNumber = (string) $number;
-
-		return $this;
 	}
 
 	/**
@@ -226,35 +211,11 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $rawOutput
-	 *
-	 * @return $this
-	 */
-	public function setRawOutput($rawOutput)
-	{
-		$this->rawOutput = (string) $rawOutput;
-
-		return $this;
-	}
-
-	/**
 	 * @return string|NULL
 	 */
 	public function getRawOutput()
 	{
 		return $this->rawOutput;
-	}
-
-	/**
-	 * @param string $type
-	 *
-	 * @return $this
-	 */
-	public function setType($type)
-	{
-		$this->type = (string) $type;
-
-		return $this;
 	}
 
 	/**
@@ -266,35 +227,11 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $carrier
-	 *
-	 * @return $this
-	 */
-	public function setCarrier($carrier)
-	{
-		$this->carrier = $carrier;
-
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getCarrier()
 	{
 		return $this->carrier;
-	}
-
-	/**
-	 * @param string $country
-	 *
-	 * @return $this
-	 */
-	public function setCountry($country)
-	{
-		$this->country = $country;
-
-		return $this;
 	}
 
 	/**

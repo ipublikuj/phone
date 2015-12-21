@@ -452,14 +452,19 @@ class Phone extends Nette\Object
 	{
 		$country = $this->phoneNumberUtil->getRegionCodeForNumber($parsed);
 
-		$phoneNumber = new Entities\Phone($parsed->getNationalNumber(), $parsed->getCountryCode());
+		$phoneNumber = new Entities\Phone(
+			$this->phoneNumberUtil->format($parsed, PhoneNumberFormat::E164),
+			$this->phoneNumberUtil->format($parsed, PhoneNumberFormat::NATIONAL),
+			$this->phoneNumberUtil->format($parsed, PhoneNumberFormat::INTERNATIONAL),
+			$parsed->getCountryCode(),
+			$country,
+			$this->phoneNumberUtil->getNumberType($parsed),
+			$this->getCarrier($parsed->getNationalNumber(), $country)
+		);
+
 		$phoneNumber
 			->setItalianLeadingZero($parsed->hasItalianLeadingZero())
-			->setType($this->phoneNumberUtil->getNumberType($parsed))
-			->setCarrier($this->getCarrier($parsed->getNationalNumber(), $country))
-			->setTimeZones($this->getTimeZones($parsed->getNationalNumber(), $country))
-			->setCountry($country)
-			->setRawOutput($this->phoneNumberUtil->format($parsed, PhoneNumberFormat::E164));
+			->setTimeZones($this->getTimeZones($parsed->getNationalNumber(), $country));
 
 		if ($parsed->hasExtension()) {
 			$phoneNumber->setExtension($parsed->getExtension());
