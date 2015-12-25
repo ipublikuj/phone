@@ -196,20 +196,13 @@ class Phone extends Nette\Object
 	 */
 	public function format($number, $country = 'AUTO', $format = self::FORMAT_INTERNATIONAL)
 	{
-		// Check if country is valid
-		$country = $this->validateCountry($country);
+		$number = $this->parse((string) $number, $country);
 
-		// Check if phone number is valid
-		if ($this->isValid((string) $number, $country)) {
-			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
+		// Parse string into phone number
+		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
 
-			// Format phone number in given format
-			return $this->phoneNumberUtil->format($phoneNumber, $format);
-
-		} else {
-			throw new Exceptions\NoValidPhoneException('Provided phone number is not valid!');
-		}
+		// Format phone number in given format
+		return $this->phoneNumberUtil->format($transformed, $format);
 	}
 
 	/**
@@ -225,9 +218,6 @@ class Phone extends Nette\Object
 	 */
 	public function getLocation($number, $country = 'AUTO', $locale = NULL, $userCountry = NULL)
 	{
-		// Check if country is valid
-		$country = $this->validateCountry($country);
-
 		try {
 			// Check for valid user country
 			$userCountry = $this->validateCountry($userCountry);
@@ -236,19 +226,16 @@ class Phone extends Nette\Object
 			$userCountry = NULL;
 		}
 
-		// Check if phone number is valid
-		if ($this->isValid((string) $number, $country)) {
-			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
-			// Determine locale
-			$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
+		$number = $this->parse((string) $number, $country);
 
-			// Get phone number location
-			return $this->phoneNumberGeocoder->getDescriptionForNumber($phoneNumber, $locale, $userCountry);
+		// Parse string into phone number
+		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
 
-		} else {
-			throw new Exceptions\NoValidPhoneException('Provided phone number is not valid!');
-		}
+		// Determine locale
+		$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
+
+		// Get phone number location
+		return $this->phoneNumberGeocoder->getDescriptionForNumber($transformed, $locale, $userCountry);
 	}
 
 	/**
@@ -262,20 +249,13 @@ class Phone extends Nette\Object
 	 */
 	public function getCarrier($number, $country = 'AUTO')
 	{
-		// Check if country is valid
-		$country = $this->validateCountry($country);
+		$number = $this->parse((string) $number, $country);
 
-		// Check if phone number is valid
-		if ($this->isValid((string) $number, $country)) {
-			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
+		// Parse string into phone number
+		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
 
-			// Extract carrier name from given phone number
-			return $this->carrierMapper->getNameForNumber($phoneNumber, 'en');
-
-		} else {
-			throw new Exceptions\NoValidPhoneException('Provided phone number is not valid!');
-		}
+		// Extract carrier name from given phone number
+		return $this->carrierMapper->getNameForNumber($transformed, 'en');
 	}
 
 	/**
@@ -289,20 +269,13 @@ class Phone extends Nette\Object
 	 */
 	public function getTimeZones($number, $country = 'AUTO')
 	{
-		// Check if country is valid
-		$country = $this->validateCountry($country);
+		$number = $this->parse((string) $number, $country);
 
-		// Check if phone number is valid
-		if ($this->isValid((string) $number, $country)) {
-			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
+		// Parse string into phone number
+		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
 
-			// Parse time zones from given phone number
-			return $this->timeZonesMapper->getTimeZonesForNumber($phoneNumber);
-
-		} else {
-			throw new Exceptions\NoValidPhoneException('Provided phone number is not valid!');
-		}
+		// Parse time zones from given phone number
+		return $this->timeZonesMapper->getTimeZonesForNumber($transformed);
 	}
 
 	/**
