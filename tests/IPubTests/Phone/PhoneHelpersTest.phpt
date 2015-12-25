@@ -43,6 +43,18 @@ class PhoneHelpersTest extends Tester\TestCase
 	private $phone;
 
 	/**
+	 * @return array[]|array
+	 */
+	public function dataValidCountriesToCodes()
+	{
+		return [
+			['CZ', 420],
+			['SK', 421],
+			['US', 1],
+		];
+	}
+
+	/**
 	 * Set up
 	 */
 	public function setUp()
@@ -143,6 +155,66 @@ class PhoneHelpersTest extends Tester\TestCase
 
 		// Get carrier with correct country value
 		Assert::equal(['Europe/Brussels'], $this->phone->getTimeZones('0499123456', 'be'));
+	}
+
+	public function testParsingValidNumber()
+	{
+		$number = $this->phone->parse('0499123456', 'be');
+
+		Assert::type('IPub\Phone\Entities\Phone', $number);
+		Assert::equal('BE', $number->getCountry());
+		Assert::equal('+32 499 12 34 56', $number->getInternationalNumber());
+		Assert::equal('0499 12 34 56', $number->getNationalNumber());
+		Assert::equal('Mobistar', $number->getCarrier());
+		Assert::equal('+32499123456', $number->getRawOutput());
+		Assert::equal(['Europe/Brussels'], $number->getTimeZones());
+
+		Assert::equal('+32499123456', (string) $number);
+	}
+
+	/**
+	 * @throws \IPub\Phone\Exceptions\NoValidPhoneException
+	 */
+	public function testParsingInvalidNumber()
+	{
+		$this->phone->parse('012345', 'be');
+	}
+
+	/**
+	 * @dataProvider dataValidCountriesToCodes
+	 *
+	 * @param string $country
+	 * @param string $expected
+	 */
+	public function testGetCountryCodeForCountry($country, $expected)
+	{
+		Assert::equal($expected, $this->phone->getCountryCodeForCountry($country));
+	}
+
+	/**
+	 * @throws \IPub\Phone\Exceptions\NoValidCountryException
+	 */
+	public function testGetCountryCodeForInvalidCountry()
+	{
+		$this->phone->getCountryCodeForCountry('xy');
+	}
+
+	public function testCreateExampleNationalNumber()
+	{
+		$number = $this->phone->getExampleNationalNumber('us');
+		Assert::equal('(201) 555-5555', $number);
+
+		$number = $this->phone->getExampleNationalNumber('cz');
+		Assert::equal('212 345 678', $number);
+	}
+
+	public function testCreateExampleInternationalNumber()
+	{
+		$number = $this->phone->getExampleInternationalNumber('us');
+		Assert::equal('+1 201-555-5555', $number);
+
+		$number = $this->phone->getExampleInternationalNumber('cz');
+		Assert::equal('+420 212 345 678', $number);
 	}
 
 	/**

@@ -329,7 +329,15 @@ class Phone extends Nette\Object
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
-		return $this->phoneNumberUtil->getCountryCodeForRegion($country);
+		// Transform country to country code
+		$code = $this->phoneNumberUtil->getCountryCodeForRegion($country);
+
+		if ($code !== 0) {
+			return $code;
+
+		} else {
+			throw new Exceptions\NoValidCountryException('Provided country code "' . $country . '" is not valid. Provide valid country code.');
+		}
 	}
 
 	/**
