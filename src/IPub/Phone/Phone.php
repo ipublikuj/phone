@@ -328,13 +328,7 @@ class Phone extends Nette\Object
 	 */
 	public function getExampleNationalNumber($country)
 	{
-		// Check if country is valid
-		$country = $this->validateCountry($country);
-
-		// Create example number
-		$number = $this->phoneNumberUtil->getExampleNumber($country);
-
-		return $number !== NULL ? $this->phoneNumberUtil->format($number, PhoneNumberFormat::NATIONAL) : NULL;
+		return $this->getExampleNumber($country, PhoneNumberFormat::NATIONAL);
 	}
 
 	/**
@@ -348,13 +342,26 @@ class Phone extends Nette\Object
 	 */
 	public function getExampleInternationalNumber($country)
 	{
+		return $this->getExampleNumber($country, PhoneNumberFormat::INTERNATIONAL);
+	}
+
+	/**
+	 * @param string $country
+	 * @param string $format
+	 *
+	 * @return string|NULL
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 */
+	protected function getExampleNumber($country, $format)
+	{
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
 		// Create example number
 		$number = $this->phoneNumberUtil->getExampleNumber($country);
 
-		return $number !== NULL ? $this->phoneNumberUtil->format($number, PhoneNumberFormat::INTERNATIONAL) : NULL;
+		return $number !== NULL ? $this->phoneNumberUtil->format($number, $format) : NULL;
 	}
 
 	/**
