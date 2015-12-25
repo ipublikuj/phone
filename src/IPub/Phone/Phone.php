@@ -115,30 +115,34 @@ class Phone extends Nette\Object
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
-		try {
-			// Parse string into phone number
-			$parsed = $this->phoneNumberUtil->parse($number, $country);
+		if ($this->isValid($number, $country)) {
+			try {
+				// Parse string into phone number
+				$parsed = $this->phoneNumberUtil->parse($number, $country);
 
-			return $this->createEntity($parsed);
+				return $this->createEntity($parsed);
 
-		} catch (libphonenumber\NumberParseException $ex) {
-			switch($ex->getErrorType())
-			{
-				case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
-					throw new Exceptions\NoValidPhoneException('Missing or invalid default region.');
+			} catch (libphonenumber\NumberParseException $ex) {
+				switch ($ex->getErrorType()) {
+					case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
+						throw new Exceptions\NoValidPhoneException('Missing or invalid default region.');
 
-				case libphonenumber\NumberParseException::NOT_A_NUMBER:
-					throw new Exceptions\NoValidPhoneException('The string supplied did not seem to be a phone number.');
+					case libphonenumber\NumberParseException::NOT_A_NUMBER:
+						throw new Exceptions\NoValidPhoneException('The string supplied did not seem to be a phone number.');
 
-				case libphonenumber\NumberParseException::TOO_SHORT_AFTER_IDD:
-					throw new Exceptions\NoValidPhoneException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
+					case libphonenumber\NumberParseException::TOO_SHORT_AFTER_IDD:
+						throw new Exceptions\NoValidPhoneException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
 
-				case libphonenumber\NumberParseException::TOO_SHORT_NSN:
-					throw new Exceptions\NoValidPhoneException('The string supplied is too short to be a phone number.');
+					case libphonenumber\NumberParseException::TOO_SHORT_NSN:
+						throw new Exceptions\NoValidPhoneException('The string supplied is too short to be a phone number.');
 
-				case libphonenumber\NumberParseException::TOO_LONG:
-					throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
+					case libphonenumber\NumberParseException::TOO_LONG:
+						throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
+				}
 			}
+
+		} else {
+			throw new Exceptions\NoValidPhoneException('Invalid phone number provided.');
 		}
 
 		return NULL;
@@ -435,12 +439,12 @@ class Phone extends Nette\Object
 			$parsed->getCountryCode(),
 			$country,
 			$this->phoneNumberUtil->getNumberType($parsed),
-			$this->getCarrier($parsed->getNationalNumber(), $country)
+			$this->carrierMapper->getNameForNumber($parsed, 'en')
 		);
 
 		$phoneNumber
 			->setItalianLeadingZero($parsed->hasItalianLeadingZero())
-			->setTimeZones($this->getTimeZones($parsed->getNationalNumber(), $country));
+			->setTimeZones($this->timeZonesMapper->getTimeZonesForNumber($parsed));
 
 		if ($parsed->hasExtension()) {
 			$phoneNumber->setExtension($parsed->getExtension());

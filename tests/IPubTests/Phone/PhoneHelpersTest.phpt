@@ -118,16 +118,15 @@ class PhoneHelpersTest extends Tester\TestCase
 		$this->phone->format('016123456', 'BEL');
 	}
 
-	/**
-	 * @throws \IPub\Phone\Exceptions\NoValidPhoneException
-	 */
 	public function testFormatPhoneWithInvalidNumber()
 	{
-		// Format with invalid country value
-		$this->phone->format('0499123456', 'NL');
+		Assert::exception(function() {
+			$this->phone->format('0499123456', 'US');
+		}, 'IPub\Phone\Exceptions\NoValidPhoneException');
 
-		// Format with invalid country value
-		$this->phone->format('016123456', 'NL');
+		Assert::exception(function() {
+			$this->phone->format('016123456', 'NL');
+		}, 'IPub\Phone\Exceptions\NoValidPhoneException');
 	}
 
 	public function testGeoLocatePhone()
