@@ -16,6 +16,12 @@ namespace IPub\Phone\Entities;
 
 use Nette;
 
+use IPub;
+use IPub\Phone\Exceptions;
+
+use libphonenumber;
+use libphonenumber\PhoneNumberFormat;
+
 class Phone extends Nette\Object
 {
 	/**
@@ -123,7 +129,7 @@ class Phone extends Nette\Object
 
 		$this->type = (string) $type;
 
-		$this->carrier = (string) $carrierName;
+		$this->carrier = ($carrierName !== '' && $carrierName !== NULL) ? (string) $carrierName : NULL;
 	}
 
 	/**
@@ -227,7 +233,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getCarrier()
 	{
@@ -270,6 +276,118 @@ class Phone extends Nette\Object
 	public function isInTimeZone($timeZone)
 	{
 		return (bool) in_array($timeZone, $this->timeZones);
+	}
+
+	/**
+	 * @param string $number
+	 * @param string $country
+	 *
+	 * @return static
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidPhoneException
+	 */
+	public static function fromNumber($number, $country = 'AUTO')
+	{
+		$phoneNumberUtil = libphonenumber\PhoneNumberUtil::getInstance();
+		$carrierMapper = libphonenumber\PhoneNumberToCarrierMapper::getInstance();
+		$timeZonesMapper = libphonenumber\PhoneNumberToTimeZonesMapper::getInstance();
+
+		// Country code have to be upper-cased
+		$country = strtoupper($country);
+
+		// Correct auto or null value
+		if ($country === 'AUTO' || $country === NULL) {
+			$country = 'AUTO';
+
+		} else if (strlen($country) !== 2 || ctype_alpha($country) === FALSE || !in_array($country, $phoneNumberUtil->getSupportedRegions())) {
+			throw new Exceptions\NoValidCountryException('Provided country code "' . $country . '" is not valid. Provide valid country code or AUTO for automatic detection.');
+		}
+
+		try {
+			// Parse string into phone number
+			$parsed = $phoneNumberUtil->parse($number, $country);
+
+		} catch (libphonenumber\NumberParseException $ex) {
+			switch ($ex->getErrorType()) {
+				case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
+					throw new Exceptions\NoValidPhoneException('Missing or invalid default region.');
+
+				case libphonenumber\NumberParseException::NOT_A_NUMBER:
+					throw new Exceptions\NoValidPhoneException('The string supplied did not seem to be a phone number.');
+
+				case libphonenumber\NumberParseException::TOO_SHORT_AFTER_IDD:
+					throw new Exceptions\NoValidPhoneException('Phone number had an IDD, but after this was not long enough to be a viable phone number.');
+
+				case libphonenumber\NumberParseException::TOO_SHORT_NSN:
+					throw new Exceptions\NoValidPhoneException('The string supplied is too short to be a phone number.');
+
+				case libphonenumber\NumberParseException::TOO_LONG:
+					throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
+
+				default:
+					throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
+			}
+		}
+
+		switch($phoneNumberUtil->getNumberType($parsed))
+		{
+			case libphonenumber\PhoneNumberType::MOBILE:
+				$numberType = IPub\Phone\Phone::TYPE_MOBILE;
+				break;
+
+			case libphonenumber\PhoneNumberType::FIXED_LINE:
+				$numberType = IPub\Phone\Phone::TYPE_FIXED_LINE;
+				break;
+
+			case libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE:
+				$numberType = IPub\Phone\Phone::TYPE_FIXED_LINE_OR_MOBILE;
+				break;
+
+			case libphonenumber\PhoneNumberType::VOIP:
+				$numberType = IPub\Phone\Phone::TYPE_VOIP;
+				break;
+
+			case libphonenumber\PhoneNumberType::PAGER:
+				$numberType = IPub\Phone\Phone::TYPE_PAGER;
+				break;
+
+			case libphonenumber\PhoneNumberType::EMERGENCY:
+				$numberType = IPub\Phone\Phone::TYPE_EMERGENCY;
+				break;
+
+			case libphonenumber\PhoneNumberType::VOICEMAIL:
+				$numberType = IPub\Phone\Phone::TYPE_VOICEMAIL;
+				break;
+
+			default:
+				$numberType = IPub\Phone\Phone::TYPE_UNKNOWN;
+				break;
+		}
+
+		$entity = new static(
+			$phoneNumberUtil->format($parsed, PhoneNumberFormat::E164),
+			$phoneNumberUtil->format($parsed, PhoneNumberFormat::NATIONAL),
+			$phoneNumberUtil->format($parsed, PhoneNumberFormat::INTERNATIONAL),
+			$parsed->getCountryCode(),
+			$phoneNumberUtil->getRegionCodeForNumber($parsed),
+			$numberType,
+			$carrierMapper->getNameForNumber($parsed, 'en') ?:NULL
+		);
+
+		$entity->setItalianLeadingZero($parsed->hasItalianLeadingZero());
+
+		$entity->setTimeZones($timeZonesMapper->getTimeZonesForNumber($parsed));
+
+		if ($parsed->hasExtension()) {
+			$entity->setExtension($parsed->getExtension());
+		}
+
+		if ($parsed->hasNumberOfLeadingZeros()) {
+			$entity->setNumberOfLeadingZeros($parsed->getNumberOfLeadingZeros());
+		}
+
+		return $entity;
 	}
 
 	/**
