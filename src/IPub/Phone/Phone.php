@@ -159,7 +159,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string $number
 	 * @param string $country
 	 * @param int $format
 	 *
