@@ -74,6 +74,13 @@ class Phone extends Nette\Object
 	protected $rawOutput = NULL;
 
 	/**
+	 * The RFC3966 number format
+	 *
+	 * @var string|NULL
+	 */
+	protected $rfcFormat = NULL;
+
+	/**
 	 * Phone number type
 	 *
 	 * @var string
@@ -102,7 +109,13 @@ class Phone extends Nette\Object
 	protected $timeZones = [];
 
 	/**
+	 * @var libphonenumber\PhoneNumber
+	 */
+	private $libPhoneNumber;
+
+	/**
 	 * @param string $rawInput
+	 * @param string $rfcFormat
 	 * @param string $nationalNumber
 	 * @param string $internationalNumber
 	 * @param int $countryCode
@@ -112,6 +125,7 @@ class Phone extends Nette\Object
 	 */
 	public function __construct(
 		$rawInput,
+		$rfcFormat,
 		$nationalNumber,
 		$internationalNumber,
 		$countryCode,
@@ -120,6 +134,7 @@ class Phone extends Nette\Object
 		$carrierName
 	) {
 		$this->rawOutput = (string) $rawInput;
+		$this->rfcFormat = (string) $rfcFormat;
 
 		$this->nationalNumber = (string) $nationalNumber;
 		$this->internationalNumber = (string) $internationalNumber;
@@ -225,6 +240,14 @@ class Phone extends Nette\Object
 	}
 
 	/**
+	 * @return string|NULL
+	 */
+	public function getRFCFormat()
+	{
+		return $this->rfcFormat;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getType()
@@ -308,10 +331,15 @@ class Phone extends Nette\Object
 			// Parse string into phone number
 			$parsed = $phoneNumberUtil->parse($number, $country);
 
+			// Check if number is valid
+			if (($country == 'AUTO' && $phoneNumberUtil->isValidNumber($parsed) === FALSE) || $phoneNumberUtil->isValidNumberForRegion($parsed, $country) === FALSE) {
+				throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
+			}
+
 		} catch (libphonenumber\NumberParseException $ex) {
 			switch ($ex->getErrorType()) {
 				case libphonenumber\NumberParseException::INVALID_COUNTRY_CODE:
-					throw new Exceptions\NoValidPhoneException('Missing or invalid default region.');
+					throw new Exceptions\NoValidCountryException('Missing or invalid country.');
 
 				case libphonenumber\NumberParseException::NOT_A_NUMBER:
 					throw new Exceptions\NoValidPhoneException('The string supplied did not seem to be a phone number.');
@@ -367,6 +395,7 @@ class Phone extends Nette\Object
 
 		$entity = new static(
 			$phoneNumberUtil->format($parsed, PhoneNumberFormat::E164),
+			$phoneNumberUtil->format($parsed, PhoneNumberFormat::RFC3966),
 			$phoneNumberUtil->format($parsed, PhoneNumberFormat::NATIONAL),
 			$phoneNumberUtil->format($parsed, PhoneNumberFormat::INTERNATIONAL),
 			$parsed->getCountryCode(),
@@ -374,6 +403,8 @@ class Phone extends Nette\Object
 			$numberType,
 			$carrierMapper->getNameForNumber($parsed, 'en') ?:NULL
 		);
+
+		$entity->libPhoneNumber = $parsed;
 
 		$entity->setItalianLeadingZero($parsed->hasItalianLeadingZero());
 

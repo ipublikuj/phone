@@ -114,13 +114,8 @@ class Phone extends Nette\Object
 	 */
 	public function parse($number, $country = 'AUTO')
 	{
-		if ($this->isValid($number, $country)) {
-			// Parse string into phone number
-			return Entities\Phone::fromNumber($number);
-
-		} else {
-			throw new Exceptions\NoValidPhoneException('Invalid phone number provided.');
-		}
+		// Parse string into phone number
+		return Entities\Phone::fromNumber($number, $country);
 	}
 
 	/**
@@ -175,17 +170,30 @@ class Phone extends Nette\Object
 	 */
 	public function format($number, $country = 'AUTO', $format = self::FORMAT_INTERNATIONAL)
 	{
-		$number = $this->parse((string) $number, $country);
+		// Create phone entity
+		$entity = Entities\Phone::fromNumber($number, $country);
 
-		// Parse string into phone number
-		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
+		switch($format)
+		{
+			case self::FORMAT_INTERNATIONAL:
+				return $entity->getInternationalNumber();
 
-		// Format phone number in given format
-		return $this->phoneNumberUtil->format($transformed, $format);
+			case self::FORMAT_NATIONAL:
+				return $entity->getNationalNumber();
+
+			case self::FORMAT_E164:
+				return $entity->getRawOutput();
+
+			case self::FORMAT_RFC3966:
+				return $entity->getRFCFormat();
+
+			default:
+				throw new Exceptions\InvalidArgumentException('Invalid number format given, provide valid phone number format.');
+		}
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string $number
 	 * @param string $country
 	 * @param string|NULL $locale
 	 * @param string|NULL $userCountry
@@ -197,28 +205,30 @@ class Phone extends Nette\Object
 	 */
 	public function getLocation($number, $country = 'AUTO', $locale = NULL, $userCountry = NULL)
 	{
-		try {
-			// Check for valid user country
-			$userCountry = $this->validateCountry($userCountry);
+		if ($this->isValid((string) $number, $country)) {
+			$country = strtoupper($country);
 
-		} catch (Exceptions\NoValidCountryException $ex) {
-			$userCountry = NULL;
+			if ($userCountry !== NULL) {
+				// Check for valid user country
+				$userCountry = $this->validateCountry($userCountry);
+			}
+
+			// Parse phone number
+			$parsed = $this->phoneNumberUtil->parse((string) $number, $country);
+
+			// Determine locale
+			$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
+
+			// Get phone number location
+			return $this->phoneNumberGeocoder->getDescriptionForNumber($parsed, $locale, $userCountry);
+
+		} else {
+			throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
 		}
-
-		$number = $this->parse((string) $number, $country);
-
-		// Parse string into phone number
-		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
-
-		// Determine locale
-		$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
-
-		// Get phone number location
-		return $this->phoneNumberGeocoder->getDescriptionForNumber($transformed, $locale, $userCountry);
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string $number
 	 * @param string $country
 	 *
 	 * @return string
@@ -228,17 +238,15 @@ class Phone extends Nette\Object
 	 */
 	public function getCarrier($number, $country = 'AUTO')
 	{
-		$number = $this->parse((string) $number, $country);
-
-		// Parse string into phone number
-		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
+		// Create phone entity
+		$entity = Entities\Phone::fromNumber($number, $country);
 
 		// Extract carrier name from given phone number
-		return $this->carrierMapper->getNameForNumber($transformed, 'en');
+		return $entity->getCarrier();
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string $number
 	 * @param string $country
 	 *
 	 * @return array
@@ -248,13 +256,11 @@ class Phone extends Nette\Object
 	 */
 	public function getTimeZones($number, $country = 'AUTO')
 	{
-		$number = $this->parse((string) $number, $country);
+		// Create phone entity
+		$entity = Entities\Phone::fromNumber($number, $country);
 
-		// Parse string into phone number
-		$transformed = $this->phoneNumberUtil->parse((string) $number, $country);
-
-		// Parse time zones from given phone number
-		return $this->timeZonesMapper->getTimeZonesForNumber($transformed);
+		// Extract carrier name from given phone number
+		return $entity->getTimeZones();
 	}
 
 	/**
@@ -363,7 +369,7 @@ class Phone extends Nette\Object
 		if ($country === 'AUTO' || $country === NULL) {
 			return 'AUTO';
 
-		} else if (strlen($country) === 2 && ctype_alpha($country) && !in_array($country, $this->phoneNumberUtil->getSupportedRegions())) {
+		} else if (strlen($country) === 2 && ctype_alpha($country) && in_array($country, $this->phoneNumberUtil->getSupportedRegions())) {
 			return $country;
 
 		} else {
