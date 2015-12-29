@@ -332,7 +332,7 @@ class Phone extends Nette\Object
 			$parsed = $phoneNumberUtil->parse($number, $country);
 
 			// Check if number is valid
-			if (($country == 'AUTO' && $phoneNumberUtil->isValidNumber($parsed) === FALSE) || $phoneNumberUtil->isValidNumberForRegion($parsed, $country) === FALSE) {
+			if (($country == 'AUTO' && $phoneNumberUtil->isValidNumber($parsed) === FALSE) || ($country != 'AUTO' && $phoneNumberUtil->isValidNumberForRegion($parsed, $country) === FALSE)) {
 				throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
 			}
 
