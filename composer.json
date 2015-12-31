@@ -20,7 +20,8 @@
 	},
 
 	"require": {
-		"php"	: ">=5.4.0",
+		"php"		: ">=5.4.0",
+		"ext-intl"	: "*",
 
 		"giggsey/libphonenumber-for-php"	: "~7.0",
 
