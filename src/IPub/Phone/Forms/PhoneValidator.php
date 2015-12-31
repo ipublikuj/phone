@@ -169,7 +169,7 @@ class PhoneValidator
 		if (in_array('AUTO', $params)) {
 			return ['ZZ'];
 
-		// Else use the supplied parameters
+			// Else use the supplied parameters
 		} else {
 			$allowedCountries = array_filter($params, function ($item) {
 				return self::isPhoneCountry($item);

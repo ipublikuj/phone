@@ -109,11 +109,6 @@ class Phone extends Nette\Object
 	protected $timeZones = [];
 
 	/**
-	 * @var libphonenumber\PhoneNumber
-	 */
-	private $libPhoneNumber;
-
-	/**
 	 * @param string $rawInput
 	 * @param string $rfcFormat
 	 * @param string $nationalNumber
@@ -132,7 +127,8 @@ class Phone extends Nette\Object
 		$country,
 		$type,
 		$carrierName
-	) {
+	)
+	{
 		$this->rawOutput = (string) $rawInput;
 		$this->rfcFormat = (string) $rfcFormat;
 
@@ -333,7 +329,7 @@ class Phone extends Nette\Object
 
 			// Check if number is valid
 			if (($country == 'AUTO' && $phoneNumberUtil->isValidNumber($parsed) === FALSE) || ($country != 'AUTO' && $phoneNumberUtil->isValidNumberForRegion($parsed, $country) === FALSE)) {
-				throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
+				throw new Exceptions\NoValidPhoneException('Provided phone number "' . $number . '" is not valid phone number. Provide valid phone number.');
 			}
 
 		} catch (libphonenumber\NumberParseException $ex) {
@@ -354,12 +350,11 @@ class Phone extends Nette\Object
 					throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
 
 				default:
-					throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
+					throw new Exceptions\NoValidPhoneException('Provided phone number "' . $number . '" is not valid phone number. Provide valid phone number.');
 			}
 		}
 
-		switch($phoneNumberUtil->getNumberType($parsed))
-		{
+		switch ($phoneNumberUtil->getNumberType($parsed)) {
 			case libphonenumber\PhoneNumberType::MOBILE:
 				$numberType = IPub\Phone\Phone::TYPE_MOBILE;
 				break;
@@ -401,10 +396,8 @@ class Phone extends Nette\Object
 			$parsed->getCountryCode(),
 			$phoneNumberUtil->getRegionCodeForNumber($parsed),
 			$numberType,
-			$carrierMapper->getNameForNumber($parsed, 'en') ?:NULL
+			$carrierMapper->getNameForNumber($parsed, 'en') ?: NULL
 		);
-
-		$entity->libPhoneNumber = $parsed;
 
 		$entity->setItalianLeadingZero($parsed->hasItalianLeadingZero());
 

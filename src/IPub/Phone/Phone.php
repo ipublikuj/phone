@@ -173,8 +173,7 @@ class Phone extends Nette\Object
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
-		switch($format)
-		{
+		switch ($format) {
 			case self::FORMAT_INTERNATIONAL:
 				return $entity->getInternationalNumber();
 
@@ -223,7 +222,7 @@ class Phone extends Nette\Object
 			return $this->phoneNumberGeocoder->getDescriptionForNumber($parsed, $locale, $userCountry);
 
 		} else {
-			throw new Exceptions\NoValidPhoneException('Provided phone number "'. $number .'" is not valid phone number. Provide valid phone number.');
+			throw new Exceptions\NoValidPhoneException('Provided phone number "' . $number . '" is not valid phone number. Provide valid phone number.');
 		}
 	}
 
