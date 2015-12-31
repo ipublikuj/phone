@@ -1,4 +1,6 @@
 extension = xdebug.so
+extension = intl.so
+extension = json.so
 
 [xdebug]
 xdebug.enable = On
