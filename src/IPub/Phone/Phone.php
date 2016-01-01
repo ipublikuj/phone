@@ -107,7 +107,7 @@ class Phone extends Nette\Object
 	 * @param string $number
 	 * @param string $country
 	 *
-	 * @return Entities\Phone
+	 * @return Entities\IPhone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
@@ -119,7 +119,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string|Entities\IPhone $number
 	 * @param string $country
 	 * @param string|NULL $type
 	 *

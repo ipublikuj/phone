@@ -144,7 +144,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return int|NULL
+	 * {@inheritdoc}
 	 */
 	public function getCountryCode()
 	{
@@ -152,7 +152,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getNationalNumber()
 	{
@@ -160,7 +160,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getInternationalNumber()
 	{
@@ -168,9 +168,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $extension
-	 *
-	 * @return $this
+	 * {@inheritdoc}
 	 */
 	public function setExtension($extension)
 	{
@@ -180,7 +178,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getExtension()
 	{
@@ -188,9 +186,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param bool $italianLeadingZero
-	 *
-	 * @return $this
+	 * {@inheritdoc}
 	 */
 	public function setItalianLeadingZero($italianLeadingZero)
 	{
@@ -200,7 +196,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function getItalianLeadingZero()
 	{
@@ -208,9 +204,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param int $numberOfLeadingZeros
-	 *
-	 * @return $this
+	 * {@inheritdoc}
 	 */
 	public function setNumberOfLeadingZeros($numberOfLeadingZeros)
 	{
@@ -220,7 +214,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return int|NULL
+	 * {@inheritdoc}
 	 */
 	public function getNumberOfLeadingZeros()
 	{
@@ -228,7 +222,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getRawOutput()
 	{
@@ -236,7 +230,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getRFCFormat()
 	{
@@ -244,7 +238,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getType()
 	{
@@ -252,7 +246,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string|NULL
+	 * {@inheritdoc}
 	 */
 	public function getCarrier()
 	{
@@ -260,7 +254,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getCountry()
 	{
@@ -268,9 +262,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param array $timeZones
-	 *
-	 * @return $this
+	 * {@inheritdoc}
 	 */
 	public function setTimeZones(array $timeZones)
 	{
@@ -280,7 +272,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getTimeZones()
 	{
@@ -288,9 +280,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $timeZone
-	 *
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isInTimeZone($timeZone)
 	{
@@ -298,13 +288,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * @param string $number
-	 * @param string $country
-	 *
-	 * @return static
-	 *
-	 * @throws Exceptions\NoValidCountryException
-	 * @throws Exceptions\NoValidPhoneException
+	 * {@inheritdoc}
 	 */
 	public static function fromNumber($number, $country = 'AUTO')
 	{
