@@ -12,6 +12,8 @@
  * @date           12.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\DI;
 
 use Nette;
@@ -31,44 +33,52 @@ use libphonenumber;
  *
  * @author         Adam Kadlec <adam.kadlec@fastybird.com>
  */
-class PhoneExtension extends DI\CompilerExtension
+final class PhoneExtension extends DI\CompilerExtension
 {
+	/**
+	 * @return void
+	 */
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('libphone.utils'))
-			->setClass('libphonenumber\PhoneNumberUtil')
+			->setClass(libphonenumber\PhoneNumberUtil::class)
 			->setFactory('libphonenumber\PhoneNumberUtil::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.geoCoder'))
-			->setClass('libphonenumber\geocoding\PhoneNumberOfflineGeocoder')
+			->setClass(libphonenumber\geocoding\PhoneNumberOfflineGeocoder::class)
 			->setFactory('libphonenumber\geocoding\PhoneNumberOfflineGeocoder::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.shortNumber'))
-			->setClass('libphonenumber\ShortNumberInfo')
+			->setClass(libphonenumber\ShortNumberInfo::class)
 			->setFactory('libphonenumber\ShortNumberInfo::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.mapper.carrier'))
-			->setClass('libphonenumber\PhoneNumberToCarrierMapper')
+			->setClass(libphonenumber\PhoneNumberToCarrierMapper::class)
 			->setFactory('libphonenumber\PhoneNumberToCarrierMapper::getInstance');
 
 		$builder->addDefinition($this->prefix('libphone.mapper.timezone'))
-			->setClass('libphonenumber\PhoneNumberToTimeZonesMapper')
+			->setClass(libphonenumber\PhoneNumberToTimeZonesMapper::class)
 			->setFactory('libphonenumber\PhoneNumberToTimeZonesMapper::getInstance');
 
 		$builder->addDefinition($this->prefix('phone'))
-			->setClass(Phone\Phone::CLASS_NAME);
+			->setClass(Phone\Phone::class);
 
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
-			->setClass(Phone\Templating\Helpers::CLASS_NAME)
+			->setClass(Phone\Templating\Helpers::class)
 			->setFactory($this->prefix('@phone') . '::createTemplateHelpers')
 			->setInject(FALSE);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function beforeCompile()
 	{
+		parent::beforeCompile();
+
 		$builder = $this->getContainerBuilder();
 
 		// Install extension latte macros
@@ -83,8 +93,10 @@ class PhoneExtension extends DI\CompilerExtension
 	/**
 	 * @param Nette\Configurator $config
 	 * @param string $extensionName
+	 *
+	 * @return void
 	 */
-	public static function register(Nette\Configurator $config, $extensionName = 'phone')
+	public static function register(Nette\Configurator $config, string $extensionName = 'phone')
 	{
 		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new PhoneExtension);

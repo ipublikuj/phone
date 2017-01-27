@@ -13,6 +13,8 @@
  * @date           13.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPubTests\Phone;
 
 use Nette;
@@ -26,7 +28,7 @@ use IPub\Phone;
 
 use libphonenumber;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 /**
  * Phone number form validation tests
@@ -358,7 +360,7 @@ class PhoneValidationTest extends Tester\TestCase
 	 *
 	 * @return Forms\Controls\TextInput
 	 */
-	private function createControl($data = [])
+	private function createControl(array $data = []) : Forms\Controls\TextInput
 	{
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_FILES = [];
@@ -379,7 +381,7 @@ class PhoneValidationTest extends Tester\TestCase
 	 *
 	 * @return Forms\Controls\SelectBox
 	 */
-	private function createInvalidControl($data = [])
+	private function createInvalidControl(array $data = []) : Forms\Controls\SelectBox
 	{
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_FILES = [];
@@ -400,7 +402,7 @@ class PhoneValidationTest extends Tester\TestCase
 	 *
 	 * @return Forms\Controls\TextInput
 	 */
-	private function createControls($data = [])
+	private function createControls(array $data = []) : Forms\Controls\TextInput
 	{
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_FILES = [];

@@ -1,6 +1,7 @@
-application:
-	mapping:
-		*: IPubTests\Phone\*Presenter
+nette:
+	application:
+		mapping:
+			*: IPubTests\Phone\*Presenter
 
 services:
 	# Test presenter

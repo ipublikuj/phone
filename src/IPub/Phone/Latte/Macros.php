@@ -12,6 +12,8 @@
  * @date           12.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\Latte;
 
 use Nette;
@@ -35,11 +37,6 @@ use IPub\Phone;
  */
 class Macros extends MacroSet
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * Register latte macros
 	 *

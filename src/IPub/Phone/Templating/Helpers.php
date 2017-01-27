@@ -12,6 +12,8 @@
  * @date           12.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\Templating;
 
 use Nette;
@@ -31,11 +33,6 @@ use IPub\Phone;
  */
 class Helpers extends Nette\Object
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * @var Phone\Phone
 	 */

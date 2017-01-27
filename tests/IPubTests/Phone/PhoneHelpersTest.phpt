@@ -13,6 +13,8 @@
  * @date           13.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPubTests\Phone;
 
 use Nette;
@@ -25,7 +27,7 @@ use IPub\Phone;
 
 use libphonenumber;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 /**
  * Phone number helpers tests
@@ -45,7 +47,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	/**
 	 * @return array[]|array
 	 */
-	public function dataValidCountriesToCodes()
+	public function dataValidCountriesToCodes() : array
 	{
 		return [
 			['CZ', 420],
@@ -55,7 +57,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * Set up
+	 * {@inheritdoc}
 	 */
 	public function setUp()
 	{
@@ -219,14 +221,14 @@ class PhoneHelpersTest extends Tester\TestCase
 	/**
 	 * @return Nette\DI\Container
 	 */
-	protected function createContainer()
+	protected function createContainer() : Nette\DI\Container
 	{
 		$config = new Nette\Configurator();
 		$config->setTempDirectory(TEMP_DIR);
 
 		Phone\DI\PhoneExtension::register($config);
 
-		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
+		$config->addConfig(__DIR__ . DS . 'files' . DS . 'config.neon');
 
 		return $config->createContainer();
 	}

@@ -12,6 +12,8 @@
  * @date           12.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\Exceptions;
 
 class NoValidCountryException extends \Exception

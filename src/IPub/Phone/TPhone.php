@@ -12,9 +12,9 @@
  * @date           12.12.15
  */
 
-namespace IPub\Phone;
+declare(strict_types = 1);
 
-use Nette;
+namespace IPub\Phone;
 
 /**
  * Phone number helpers trait

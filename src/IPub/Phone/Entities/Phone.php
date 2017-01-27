@@ -12,6 +12,8 @@
  * @date           17.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\Entities;
 
 use Nette;
@@ -119,32 +121,32 @@ class Phone extends Nette\Object
 	 * @param string $carrierName
 	 */
 	public function __construct(
-		$rawInput,
-		$rfcFormat,
-		$nationalNumber,
-		$internationalNumber,
-		$countryCode,
-		$country,
-		$type,
-		$carrierName
+		string $rawInput,
+		string $rfcFormat,
+		string $nationalNumber,
+		string $internationalNumber,
+		int $countryCode,
+		string $country,
+		string $type,
+		string $carrierName
 	)
 	{
-		$this->rawOutput = (string) $rawInput;
-		$this->rfcFormat = (string) $rfcFormat;
+		$this->rawOutput = $rawInput;
+		$this->rfcFormat = $rfcFormat;
 
-		$this->nationalNumber = (string) $nationalNumber;
-		$this->internationalNumber = (string) $internationalNumber;
+		$this->nationalNumber = $nationalNumber;
+		$this->internationalNumber = $internationalNumber;
 
-		$this->countryCode = (int) $countryCode;
-		$this->country = (string) $country;
+		$this->countryCode = $countryCode;
+		$this->country = $country;
 
-		$this->type = (string) $type;
+		$this->type = $type;
 
-		$this->carrier = ($carrierName !== '' && $carrierName !== NULL) ? (string) $carrierName : NULL;
+		$this->carrier = ($carrierName !== '' && $carrierName !== NULL) ? $carrierName : NULL;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return int|NULL
 	 */
 	public function getCountryCode()
 	{
@@ -152,7 +154,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getNationalNumber()
 	{
@@ -160,7 +162,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getInternationalNumber()
 	{
@@ -168,17 +170,17 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $extension
+	 *
+	 * @return void
 	 */
-	public function setExtension($extension)
+	public function setExtension(string $extension)
 	{
-		$this->extension = (string) $extension;
-
-		return $this;
+		$this->extension = $extension;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getExtension()
 	{
@@ -186,35 +188,35 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param bool $italianLeadingZero
+	 *
+	 * @return void
 	 */
-	public function setItalianLeadingZero($italianLeadingZero)
+	public function setItalianLeadingZero(bool $italianLeadingZero)
 	{
-		$this->italianLeadingZero = (bool) $italianLeadingZero;
-
-		return $this;
+		$this->italianLeadingZero = $italianLeadingZero;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return bool
 	 */
-	public function getItalianLeadingZero()
+	public function getItalianLeadingZero() : bool
 	{
 		return $this->italianLeadingZero;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param int $numberOfLeadingZeros
+	 *
+	 * @return void
 	 */
-	public function setNumberOfLeadingZeros($numberOfLeadingZeros)
+	public function setNumberOfLeadingZeros(int $numberOfLeadingZeros)
 	{
-		$this->numberOfLeadingZeros = (int) $numberOfLeadingZeros;
-
-		return $this;
+		$this->numberOfLeadingZeros = $numberOfLeadingZeros;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return int|NULL
 	 */
 	public function getNumberOfLeadingZeros()
 	{
@@ -222,7 +224,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getRawOutput()
 	{
@@ -230,7 +232,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getRFCFormat()
 	{
@@ -238,15 +240,15 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string
 	 */
-	public function getType()
+	public function getType() : string
 	{
 		return $this->type;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|NULL
 	 */
 	public function getCarrier()
 	{
@@ -254,7 +256,7 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return string
 	 */
 	public function getCountry()
 	{
@@ -262,35 +264,43 @@ class Phone extends Nette\Object
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param array $timeZones
+	 *
+	 * @return void
 	 */
 	public function setTimeZones(array $timeZones)
 	{
 		$this->timeZones = $timeZones;
-
-		return $this;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return array
 	 */
-	public function getTimeZones()
+	public function getTimeZones() : array
 	{
 		return $this->timeZones;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $timeZone
+	 *
+	 * @return bool
 	 */
-	public function isInTimeZone($timeZone)
+	public function isInTimeZone($timeZone) : bool
 	{
-		return (bool) in_array($timeZone, $this->timeZones);
+		return in_array($timeZone, $this->timeZones, TRUE);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $number
+	 * @param string $country
+	 *
+	 * @return static
+	 *
+	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public static function fromNumber($number, $country = 'AUTO')
+	public static function fromNumber(string $number, string $country = 'AUTO')
 	{
 		$phoneNumberUtil = libphonenumber\PhoneNumberUtil::getInstance();
 		$carrierMapper = libphonenumber\PhoneNumberToCarrierMapper::getInstance();
@@ -304,7 +314,7 @@ class Phone extends Nette\Object
 			$country = 'AUTO';
 
 		} else if (strlen($country) !== 2 || ctype_alpha($country) === FALSE || !in_array($country, $phoneNumberUtil->getSupportedRegions())) {
-			throw new Exceptions\NoValidCountryException('Provided country code "' . $country . '" is not valid. Provide valid country code or AUTO for automatic detection.');
+			throw new Exceptions\NoValidCountryException(sprintf('Provided country code "%s" is not valid. Provide valid country code or AUTO for automatic detection.', $country));
 		}
 
 		try {
@@ -313,7 +323,7 @@ class Phone extends Nette\Object
 
 			// Check if number is valid
 			if (($country == 'AUTO' && $phoneNumberUtil->isValidNumber($parsed) === FALSE) || ($country != 'AUTO' && $phoneNumberUtil->isValidNumberForRegion($parsed, $country) === FALSE)) {
-				throw new Exceptions\NoValidPhoneException('Provided phone number "' . $number . '" is not valid phone number. Provide valid phone number.');
+				throw new Exceptions\NoValidPhoneException(sprintf('Provided phone number "%s" is not valid phone number. Provide valid phone number.', $number));
 			}
 
 		} catch (libphonenumber\NumberParseException $ex) {
@@ -334,7 +344,7 @@ class Phone extends Nette\Object
 					throw new Exceptions\NoValidPhoneException('The string supplied was too long to parse into phone number.');
 
 				default:
-					throw new Exceptions\NoValidPhoneException('Provided phone number "' . $number . '" is not valid phone number. Provide valid phone number.');
+					throw new Exceptions\NoValidPhoneException(sprintf('Provided phone number "%s" is not valid phone number. Provide valid phone number.', $number));
 			}
 		}
 

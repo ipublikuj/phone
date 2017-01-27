@@ -12,6 +12,8 @@
  * @date           12.12.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Phone\Forms;
 
 use Nette;
@@ -34,11 +36,6 @@ use IPub\Phone\Exceptions;
 class PhoneValidator
 {
 	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
-	/**
 	 * Define validator calling constant
 	 */
 	const PHONE = 'IPub\Phone\Forms\PhoneValidator::validatePhone';
@@ -55,12 +52,13 @@ class PhoneValidator
 	public static function validatePhone(Forms\IControl $control, $params = [])
 	{
 		if (!$control instanceof Forms\Controls\TextInput) {
-			throw new Exceptions\InvalidArgumentException('This validator could be used only on text field. You used it on: "' . get_class($control) . '"');
+			throw new Exceptions\InvalidArgumentException(sprintf('This validator could be used only on text field. You used it on: "%s"', get_class($control)));
 		}
 
 		$params = $params === NULL ? [] : $params;
 
 		// Get form element container
+		/** @var Forms\Container $container */
 		$container = $control->getParent();
 
 		// Get form element value

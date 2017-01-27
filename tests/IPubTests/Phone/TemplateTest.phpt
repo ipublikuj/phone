@@ -13,6 +13,8 @@
  * @date           30.01.15
  */
 
+declare(strict_types = 1);
+
 namespace IPubTests\Phone;
 
 use Nette;
@@ -27,7 +29,8 @@ use Tester\Assert;
 use IPub;
 use IPub\Phone;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
+require __DIR__ . DS . 'libs' . DS . 'RouterFactory.php';
 
 /**
  * Phone number template helpers and macros tests
@@ -40,12 +43,12 @@ require __DIR__ . '/../bootstrap.php';
 class TemplateTest extends Tester\TestCase
 {
 	/**
-	 * @var Nette\Application\IPresenterFactory
+	 * @var Application\IPresenterFactory
 	 */
 	private $presenterFactory;
 
 	/**
-	 * Set up
+	 * {@inheritdoc}
 	 */
 	public function setUp()
 	{
@@ -100,7 +103,7 @@ class TemplateTest extends Tester\TestCase
 	/**
 	 * @return Application\IPresenter
 	 */
-	protected function createPresenter()
+	protected function createPresenter() : Application\IPresenter
 	{
 		// Create test presenter
 		$presenter = $this->presenterFactory->createPresenter('Test');
@@ -113,15 +116,23 @@ class TemplateTest extends Tester\TestCase
 	/**
 	 * @return Nette\DI\Container
 	 */
-	protected function createContainer()
+	protected function createContainer() : Nette\DI\Container
 	{
 		$config = new Nette\Configurator();
 		$config->setTempDirectory(TEMP_DIR);
 
 		Phone\DI\PhoneExtension::register($config);
 
-		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
-		$config->addConfig(__DIR__ . '/files/presenters.neon', $config::NONE);
+		$config->addConfig(__DIR__ . DS . 'files' . DS . 'config.neon');
+
+		$version = getenv('NETTE');
+
+		if (!$version || $version == 'default') {
+			$config->addConfig(__DIR__ . DS . 'files' . DS . 'presenters.neon');
+
+		} else {
+			$config->addConfig(__DIR__ . DS . 'files' . DS . 'presenters_2.3.neon');
+		}
 
 		return $config->createContainer();
 	}
@@ -132,27 +143,13 @@ class TestPresenter extends UI\Presenter
 	public function renderUseHelper()
 	{
 		// Set template for template helper testing
-		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'helper.latte');
+		$this->template->setFile(__DIR__ . DS . 'templates' . DS . 'helper.latte');
 	}
 
 	public function renderUseMacro()
 	{
 		// Set template for template macro testing
-		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'macro.latte');
-	}
-}
-
-class RouterFactory
-{
-	/**
-	 * @return \Nette\Application\IRouter
-	 */
-	public static function createRouter()
-	{
-		$router = new Routers\  RouteList();
-		$router[] = new Routers\Route('<presenter>/<action>[/<id>]', 'Test:default');
-
-		return $router;
+		$this->template->setFile(__DIR__ . DS . 'templates' . DS . 'macro.latte');
 	}
 }
 
