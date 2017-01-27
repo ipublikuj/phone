@@ -301,45 +301,51 @@ final class Phone extends Nette\Object
 	 * Get example country national number
 	 *
 	 * @param string $country
+	 * @param string $type
 	 *
 	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public function getExampleNationalNumber(string $country) : string
+	public function getExampleNationalNumber(string $country, $type = self::TYPE_FIXED_LINE) : string
 	{
-		return $this->getExampleNumber($country, PhoneNumberFormat::NATIONAL);
+		return $this->getExampleNumber($country, PhoneNumberFormat::NATIONAL, $type);
 	}
 
 	/**
 	 * Get example country international number
 	 *
 	 * @param string $country
+	 * @param string $type
 	 *
 	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public function getExampleInternationalNumber(string $country) : string
+	public function getExampleInternationalNumber(string $country, $type = self::TYPE_FIXED_LINE) : string
 	{
-		return $this->getExampleNumber($country, PhoneNumberFormat::INTERNATIONAL);
+		return $this->getExampleNumber($country, PhoneNumberFormat::INTERNATIONAL, $type);
 	}
 
 	/**
 	 * @param string $country
 	 * @param int $format
+	 * @param string $type
 	 *
 	 * @return string|NULL
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	private function getExampleNumber(string $country, int $format)
+	private function getExampleNumber(string $country, int $format, $type = self::TYPE_FIXED_LINE)
 	{
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
+		// Check if phone type is valid
+		$type = $type !== NULL ? $this->validateType($type) : NULL;
+
 		// Create example number
-		$number = $this->phoneNumberUtil->getExampleNumber($country);
+		$number = $this->phoneNumberUtil->getExampleNumberForType($country, $type);
 
 		return $number !== NULL ? $this->phoneNumberUtil->format($number, $format) : NULL;
 	}
