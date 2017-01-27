@@ -1,5 +1,5 @@
 {
-	"name": "ipub/phone",
+	"name": "ipub-phone",
 	"description": "Phone helper & validator for Nette Framework",
 	"keywords": ["nette", "phone", "tools", "ipub", "ipublikuj"],
 	"main": [
