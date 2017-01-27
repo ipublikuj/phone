@@ -1,9 +1,19 @@
 {
 	"name": "ipub/phone",
+	"description": "Phone helper & validator for Nette Framework",
+	"keywords": ["nette", "phone", "tools", "ipub", "ipublikuj"],
 	"main": [
-		"client-side/js/ipub.phone.js",
-		"client-side/js/ipub.phone.library.js"
+		"public/js/ipub.phone.js",
+		"public/js/ipub.phone.library.js"
 	],
+	"authors": [
+		{
+			"name"		: "iPublikuj:cms",
+			"email"		: "info@ipublikuj.eu",
+			"homepage"	: "http://www.ipublikuj.eu/"
+		}
+	],
+	"license": ["GPL-2.0", "GPL-3.0"],
 	"ignore": [
 		"src",
 		"tests",

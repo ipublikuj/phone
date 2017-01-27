@@ -51,10 +51,10 @@ This part of Phone extension is based on google's library too, but this part has
 
 If it cause some problems, and fresh data will help, fell free to use [Google's Closure Compile Service](http://closure-compiler.appspot.com/home) to update base library.
 
-1. Open [closure.txt](https://github.com/iPublikuj/phone/blob/master/client-side/closure.txt) in this part of extension and copy whole content to your clipboard
-2. Open [Google's Closure Compile Service](http://closure-compiler.appspot.com/home) and the content of [closure.txt](https://github.com/iPublikuj/phone/blob/master/client-side/closure.txt) into left big textarea
+1. Open [closure.txt](https://github.com/iPublikuj/phone/blob/master/public/closure.txt) in this part of extension and copy whole content to your clipboard
+2. Open [Google's Closure Compile Service](http://closure-compiler.appspot.com/home) and the content of [closure.txt](https://github.com/iPublikuj/phone/blob/master/public/closure.txt) into left big textarea
 3. Make sure you have overwritten all previous content
 4. Press **Compile** button and wait for result
-5. If everything is ok, on the right side of page will be freshly compiled [ipub.phone.library.js](https://github.com/iPublikuj/phone/blob/master/client-side/js/ipub.phone.library.js)
+5. If everything is ok, on the right side of page will be freshly compiled [ipub.phone.library.js](https://github.com/iPublikuj/phone/blob/master/public/js/ipub.phone.library.js)
 6. Update this file in your local fork of this repository
 7. Commit and submit a Pull Request
