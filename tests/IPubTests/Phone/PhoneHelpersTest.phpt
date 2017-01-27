@@ -203,7 +203,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	public function testCreateExampleNationalNumber()
 	{
 		$number = $this->phone->getExampleNationalNumber('us');
-		Assert::equal('(201) 555-5555', $number);
+		Assert::equal('(201) 555-0123', $number);
 
 		$number = $this->phone->getExampleNationalNumber('cz');
 		Assert::equal('212 345 678', $number);
@@ -212,7 +212,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	public function testCreateExampleInternationalNumber()
 	{
 		$number = $this->phone->getExampleInternationalNumber('us');
-		Assert::equal('+1 201-555-5555', $number);
+		Assert::equal('+1 201-555-0123', $number);
 
 		$number = $this->phone->getExampleInternationalNumber('cz');
 		Assert::equal('+420 212 345 678', $number);

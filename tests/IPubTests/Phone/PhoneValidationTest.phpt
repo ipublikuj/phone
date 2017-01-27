@@ -379,9 +379,9 @@ class PhoneValidationTest extends Tester\TestCase
 	/**
 	 * @param array $data
 	 *
-	 * @return Forms\Controls\SelectBox
+	 * @return Forms\Controls\TextArea
 	 */
-	private function createInvalidControl(array $data = []) : Forms\Controls\SelectBox
+	private function createInvalidControl(array $data = []) : Forms\Controls\TextArea
 	{
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$_FILES = [];

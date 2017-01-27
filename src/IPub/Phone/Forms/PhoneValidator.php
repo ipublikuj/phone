@@ -49,7 +49,7 @@ class PhoneValidator
 	 * @throws Exceptions\InvalidParameterException
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public static function validatePhone(Forms\IControl $control, $params = [])
+	public static function validatePhone(Forms\IControl $control, $params = []) : bool
 	{
 		if (!$control instanceof Forms\Controls\TextInput) {
 			throw new Exceptions\InvalidArgumentException(sprintf('This validator could be used only on text field. You used it on: "%s"', get_class($control)));
@@ -132,7 +132,7 @@ class PhoneValidator
 	 *
 	 * @return bool
 	 */
-	protected static function isPhoneCountry($country)
+	protected static function isPhoneCountry(string $country) : bool
 	{
 		return (strlen($country) === 2 && ctype_alpha($country) && ctype_upper($country) && $country !== 'ZZ');
 	}
@@ -144,7 +144,7 @@ class PhoneValidator
 	 *
 	 * @return bool
 	 */
-	protected static function isPhoneType($type)
+	protected static function isPhoneType(string $type) : bool
 	{
 		// Legacy support.
 		$type = ($type == 'LANDLINE' ? 'FIXED_LINE' : $type);
@@ -161,7 +161,7 @@ class PhoneValidator
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	protected static function determineCountries(array $params = [])
+	protected static function determineCountries(array $params = []) : array
 	{
 		// Check if we need to parse for automatic detection
 		if (in_array('AUTO', $params)) {
@@ -188,7 +188,7 @@ class PhoneValidator
 	 *
 	 * @return array
 	 */
-	protected static function determineTypes(array $params = [])
+	protected static function determineTypes(array $params = []) : array
 	{
 		// Get phone types
 		$untransformedTypes = array_filter($params, function ($item) {
@@ -217,7 +217,7 @@ class PhoneValidator
 	 *
 	 * @return string
 	 */
-	protected static function constructPhoneTypeConstant($type)
+	protected static function constructPhoneTypeConstant(string $type) : string
 	{
 		return '\IPub\Phone\Phone::TYPE_' . $type;
 	}
@@ -229,6 +229,8 @@ class PhoneValidator
 	 * @param array $allowedCountries
 	 * @param array $allowedTypes
 	 *
+	 * @return void
+	 *
 	 * @throws Exceptions\InvalidParameterException
 	 */
 	protected static function checkLeftoverParameters(array $params = [], array $allowedCountries = [], array $allowedTypes = [])
@@ -237,7 +239,7 @@ class PhoneValidator
 		$leftovers = array_diff($params, $allowedCountries, $allowedTypes, ['AUTO']);
 
 		if (!empty($leftovers)) {
-			throw new Exceptions\InvalidParameterException('Invalid parameters were sent to the validator: "' . implode(', ', $leftovers) . '"');
+			throw new Exceptions\InvalidParameterException(sprintf('Invalid parameters were sent to the validator: "%s"', implode(', ', $leftovers)));
 		}
 	}
 }
