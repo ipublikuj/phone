@@ -38,30 +38,22 @@ class Helpers extends Nette\Object
 	 */
 	private $phone;
 
+	/**
+	 * @param Phone\Phone $phone
+	 */
 	public function __construct(Phone\Phone $phone)
 	{
 		$this->phone = $phone;
 	}
 
 	/**
-	 * Register template filters
-	 *
-	 * @param Engine $engine
-	 */
-	public function register(Engine $engine)
-	{
-		$engine->addFilter('phone', [$this, 'phone']);
-		$engine->addFilter('getPhoneNumberService', [$this, 'getPhoneNumberService']);
-	}
-
-	/**
 	 * @param string $phone
-	 * @param string|NULL $country
-	 * @param int|NULL $format
+	 * @param string $country
+	 * @param int $format
 	 *
 	 * @return string
 	 */
-	public function phone($phone, $country = 'AUTO', $format = Phone\Phone::FORMAT_INTERNATIONAL)
+	public function phone(string $phone, string $country = 'AUTO', int $format = Phone\Phone::FORMAT_INTERNATIONAL)
 	{
 		$country = strtoupper($country);
 
@@ -76,7 +68,7 @@ class Helpers extends Nette\Object
 	/**
 	 * @return Phone\Phone
 	 */
-	public function getPhoneNumberService()
+	public function getPhoneNumberService() : Phone\Phone
 	{
 		return $this->phone;
 	}

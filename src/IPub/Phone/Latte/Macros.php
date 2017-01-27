@@ -69,10 +69,10 @@ class Macros extends MacroSet
 		$arguments = self::prepareMacroArguments($node->args);
 
 		if ($arguments['phone'] === NULL) {
-			throw new Latte\CompileException("Please provide phone number.");
+			throw new Latte\CompileException('Please provide phone number.');
 		}
 
-		return $writer->write('echo %escape($template->getPhoneNumberService()->format("' . $arguments['phone'] . '", "' . $arguments['country'] . '", ' . $arguments['format'] . '))');
+		return $writer->write('echo %escape(property_exists($this, "filters") ? call_user_func($this->filters->phone, ' . $arguments['phone'] . ', ' . $arguments['country'] . ', ' . $arguments['format'] . ') : $template->getPhoneNumberService()->format("' . $arguments['phone'] . '", "' . $arguments['country'] . '", ' . $arguments['format'] . '));');
 	}
 
 	/**

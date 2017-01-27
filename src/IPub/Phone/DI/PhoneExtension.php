@@ -17,6 +17,7 @@ declare(strict_types = 1);
 namespace IPub\Phone\DI;
 
 use Nette;
+use Nette\Bridges;
 use Nette\DI;
 use Nette\PhpGenerator as Code;
 
@@ -40,6 +41,7 @@ final class PhoneExtension extends DI\CompilerExtension
 	 */
 	public function loadConfiguration()
 	{
+		// Get container builder
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('libphone.utils'))
@@ -79,10 +81,11 @@ final class PhoneExtension extends DI\CompilerExtension
 	{
 		parent::beforeCompile();
 
+		// Get container builder
 		$builder = $this->getContainerBuilder();
 
 		// Install extension latte macros
-		$latteFactory = $builder->getDefinition($builder->getByType('\Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory');
+		$latteFactory = $builder->getDefinition($builder->getByType(Bridges\ApplicationLatte\ILatteFactory::class) ?: 'nette.latteFactory');
 
 		$latteFactory
 			->addSetup('IPub\Phone\Latte\Macros::install(?->getCompiler())', ['@self'])
