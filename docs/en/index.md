@@ -196,4 +196,4 @@ and it will create output like:
 </p>
 ```
 
-Both, macro and helper have two optional parameters `country code` and `number format`. Country code have to be in [ISO 3166-1 alpha-2 compliant](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) and format you can choose from [defined constants](https://github.com/iPublikuj/phone/blob/master/src/IPub/Phone/Phone.php) with prefix `TYPE_`
+Both, macro and helper have two optional parameters `country code` and `number format`. Country code have to be in [ISO 3166-1 alpha-2 compliant](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) and format you can choose from [defined constants](https://github.com/iPublikuj/phone/blob/master/src/IPub/Phone/Phone.php#L42-L49) with prefix `TYPE_`

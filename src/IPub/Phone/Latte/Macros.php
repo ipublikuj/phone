@@ -72,7 +72,7 @@ class Macros extends MacroSet
 			throw new Latte\CompileException('Please provide phone number.');
 		}
 
-		return $writer->write('echo %escape(property_exists($this, "filters") ? call_user_func($this->filters->phone, ' . $arguments['phone'] . ', ' . $arguments['country'] . ', ' . $arguments['format'] . ') : $template->getPhoneNumberService()->format("' . $arguments['phone'] . '", "' . $arguments['country'] . '", ' . $arguments['format'] . '));');
+		return $writer->write('echo %escape(property_exists($this, "filters") ? call_user_func($this->filters->phone, ' . $arguments['phone'] . ', "' . $arguments['country'] . '", ' . $arguments['format'] . ') : $template->getPhoneNumberService()->format("' . $arguments['phone'] . '", "' . $arguments['country'] . '", ' . $arguments['format'] . '));');
 	}
 
 	/**
