@@ -118,7 +118,7 @@ class Phone extends Nette\Object
 	 * @param int $countryCode
 	 * @param string $country
 	 * @param string $type
-	 * @param string $carrierName
+	 * @param string|NULL $carrierName
 	 */
 	public function __construct(
 		string $rawInput,
@@ -128,7 +128,7 @@ class Phone extends Nette\Object
 		int $countryCode,
 		string $country,
 		string $type,
-		string $carrierName
+		string $carrierName = NULL
 	)
 	{
 		$this->rawOutput = $rawInput;

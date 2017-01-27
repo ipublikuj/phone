@@ -327,13 +327,13 @@ final class Phone extends Nette\Object
 
 	/**
 	 * @param string $country
-	 * @param string $format
+	 * @param int $format
 	 *
 	 * @return string|NULL
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	private function getExampleNumber(string $country, string $format)
+	private function getExampleNumber(string $country, int $format)
 	{
 		// Check if country is valid
 		$country = $this->validateCountry($country);
