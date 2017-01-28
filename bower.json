@@ -6,6 +6,9 @@
 		"public/js/ipub.phone.js",
 		"public/js/ipub.phone.library.js"
 	],
+	"dependencies": {
+		"jquery": "~2.1.0"
+	},
 	"authors": [
 		{
 			"name"		: "iPublikuj:cms",
