@@ -34,8 +34,10 @@ use IPub\Phone\Exceptions;
  *
  * @author         Adam Kadlec <adam.kadlec@fastybird.com>
  */
-final class Phone extends Nette\Object
+final class Phone
 {
+    use Nette\SmartObject;
+
 	/**
 	 * Define phone number types
 	 */
