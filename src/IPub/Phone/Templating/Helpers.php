@@ -31,8 +31,10 @@ use IPub\Phone;
  *
  * @author         Adam Kadlec <adam.kadlec@fastybird.com>
  */
-class Helpers extends Nette\Object
+class Helpers
 {
+    use Nette\SmartObject;
+
 	/**
 	 * @var Phone\Phone
 	 */

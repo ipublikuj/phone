@@ -24,8 +24,10 @@ use IPub\Phone\Exceptions;
 use libphonenumber;
 use libphonenumber\PhoneNumberFormat;
 
-class Phone extends Nette\Object
+class Phone
 {
+    use Nette\SmartObject;
+
 	/**
 	 * The country code
 	 *

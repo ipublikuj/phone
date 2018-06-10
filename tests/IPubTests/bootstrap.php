@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types = 1);
-
+putenv('NETTE=2.4');
 define('DS', DIRECTORY_SEPARATOR);
 
 require __DIR__ . DS . '..' . DS . '..' . DS . 'vendor' . DS . 'autoload.php';

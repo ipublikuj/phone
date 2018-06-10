@@ -146,7 +146,7 @@ class PhoneHelpersTest extends Tester\TestCase
 		Assert::equal(NULL, $this->phone->getCarrier('016123456', 'be'));
 
 		// Get carrier with correct country value
-		Assert::equal('Mobistar', $this->phone->getCarrier('0499123456', 'be'));
+		Assert::equal('Orange', $this->phone->getCarrier('0499123456', 'be'));
 	}
 
 	public function testPhoneGetTimeZones()
@@ -166,7 +166,7 @@ class PhoneHelpersTest extends Tester\TestCase
 		Assert::equal('BE', $number->getCountry());
 		Assert::equal('+32 499 12 34 56', $number->getInternationalNumber());
 		Assert::equal('0499 12 34 56', $number->getNationalNumber());
-		Assert::equal('Mobistar', $number->getCarrier());
+		Assert::equal('Orange', $number->getCarrier());
 		Assert::equal('+32499123456', $number->getRawOutput());
 		Assert::equal(['Europe/Brussels'], $number->getTimeZones());
 
