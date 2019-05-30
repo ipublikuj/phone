@@ -227,8 +227,6 @@ class PhoneHelpersTest extends Tester\TestCase
 
 		Phone\DI\PhoneExtension::register($config);
 
-		$config->addConfig(__DIR__ . DS . 'files' . DS . 'config.neon');
-
 		return $config->createContainer();
 	}
 }
