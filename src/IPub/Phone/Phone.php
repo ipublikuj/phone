@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
  * @subpackage     common
  * @since          1.0.0
@@ -22,7 +22,6 @@ use Nette\Localization;
 use libphonenumber;
 use libphonenumber\PhoneNumberFormat;
 
-use IPub;
 use IPub\Phone\Entities;
 use IPub\Phone\Exceptions;
 
@@ -32,28 +31,31 @@ use IPub\Phone\Exceptions;
  * @package        iPublikuj:Phone!
  * @subpackage     common
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class Phone
 {
-    use Nette\SmartObject;
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
 
 	/**
 	 * Define phone number types
 	 */
-	const TYPE_FIXED_LINE = 'FIXED_LINE';
-	const TYPE_MOBILE = 'MOBILE';
-	const TYPE_FIXED_LINE_OR_MOBILE = 'FIXED_LINE_OR_MOBILE';
-	const TYPE_VOIP = 'VOIP';
-	const TYPE_PAGER = 'PAGER';
-	const TYPE_EMERGENCY = 'EMERGENCY';
-	const TYPE_VOICEMAIL = 'VOICEMAIL';
-	const TYPE_UNKNOWN = 'UNKNOWN';
+	public const TYPE_FIXED_LINE = 'FIXED_LINE';
+	public const TYPE_MOBILE = 'MOBILE';
+	public const TYPE_FIXED_LINE_OR_MOBILE = 'FIXED_LINE_OR_MOBILE';
+	public const TYPE_VOIP = 'VOIP';
+	public const TYPE_PAGER = 'PAGER';
+	public const TYPE_EMERGENCY = 'EMERGENCY';
+	public const TYPE_VOICEMAIL = 'VOICEMAIL';
+	public const TYPE_UNKNOWN = 'UNKNOWN';
 
-	const FORMAT_E164 = PhoneNumberFormat::E164;
-	const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL;
-	const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
-	const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
+	public const FORMAT_E164 = PhoneNumberFormat::E164;
+	public const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL;
+	public const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
+	public const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
 
 	/**
 	 * @var libphonenumber\PhoneNumberUtil
@@ -76,7 +78,7 @@ final class Phone
 	private $timeZonesMapper;
 
 	/**
-	 * @var Localization\ITranslator
+	 * @var Localization\ITranslator|NULL
 	 */
 	private $translator;
 
@@ -85,16 +87,15 @@ final class Phone
 	 * @param libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder
 	 * @param libphonenumber\PhoneNumberToCarrierMapper $carrierMapper
 	 * @param libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper
-	 * @param Localization\ITranslator $translator
+	 * @param Localization\ITranslator|NULL $translator
 	 */
 	public function __construct(
 		libphonenumber\PhoneNumberUtil $phoneNumberUtil,
 		libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder,
 		libphonenumber\PhoneNumberToCarrierMapper $carrierMapper,
 		libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper,
-		Localization\ITranslator $translator = NULL
-	)
-	{
+		?Localization\ITranslator $translator = NULL
+	) {
 		// Lib phone library utils
 		$this->phoneNumberUtil = $phoneNumberUtil;
 		$this->phoneNumberGeocoder = $phoneNumberGeocoder;
@@ -114,8 +115,10 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public function parse(string $number, string $country = 'AUTO') : Entities\Phone
-	{
+	public function parse(
+		string $number,
+		string $country = 'AUTO'
+	) : Entities\Phone {
 		// Parse string into phone number
 		return Entities\Phone::fromNumber($number, $country);
 	}
@@ -130,8 +133,11 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidTypeException
 	 */
-	public function isValid(string $number, string $country = 'AUTO', $type = NULL) : bool
-	{
+	public function isValid(
+		string $number,
+		string $country = 'AUTO',
+		?string $type = NULL
+	) : bool {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
@@ -170,8 +176,11 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public function format(string $number, string $country = 'AUTO', int $format = self::FORMAT_INTERNATIONAL)
-	{
+	public function format(
+		string $number,
+		string $country = 'AUTO',
+		int $format = self::FORMAT_INTERNATIONAL
+	) : ?string {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -204,8 +213,12 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public function getLocation(string $number, string $country = 'AUTO', string $locale = NULL, string $userCountry = NULL) : string
-	{
+	public function getLocation(
+		string $number,
+		string $country = 'AUTO',
+		?string $locale = NULL,
+		?string $userCountry = NULL
+	) : string {
 		if ($this->isValid((string) $number, $country)) {
 			$country = strtoupper($country);
 
@@ -237,8 +250,10 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public function getCarrier(string $number, string $country = 'AUTO')
-	{
+	public function getCarrier(
+		string $number,
+		string $country = 'AUTO'
+	) : ?string {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -255,8 +270,10 @@ final class Phone
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
 	 */
-	public function getTimeZones(string $number, string $country = 'AUTO') : array
-	{
+	public function getTimeZones(
+		string $number,
+		string $country = 'AUTO'
+	) : array {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -283,8 +300,9 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public function getCountryCodeForCountry(string $country) : int
-	{
+	public function getCountryCodeForCountry(
+		string $country
+	) : int {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
@@ -309,8 +327,10 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public function getExampleNationalNumber(string $country, $type = self::TYPE_FIXED_LINE) : string
-	{
+	public function getExampleNationalNumber(
+		string $country,
+		string $type = self::TYPE_FIXED_LINE
+	) : string {
 		return $this->getExampleNumber($country, PhoneNumberFormat::NATIONAL, $type);
 	}
 
@@ -324,8 +344,10 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	public function getExampleInternationalNumber(string $country, $type = self::TYPE_FIXED_LINE) : string
-	{
+	public function getExampleInternationalNumber(
+		string $country,
+		string $type = self::TYPE_FIXED_LINE
+	) : string {
 		return $this->getExampleNumber($country, PhoneNumberFormat::INTERNATIONAL, $type);
 	}
 
@@ -338,8 +360,11 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	private function getExampleNumber(string $country, int $format, $type = self::TYPE_FIXED_LINE)
-	{
+	private function getExampleNumber(
+		string $country,
+		int $format,
+		string $type = self::TYPE_FIXED_LINE
+	) : ?string {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
@@ -353,22 +378,15 @@ final class Phone
 	}
 
 	/**
-	 * @return Templating\Helpers
-	 */
-	public function createTemplateHelpers()
-	{
-		return new Templating\Helpers($this);
-	}
-
-	/**
 	 * @param string $country
 	 *
 	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 */
-	private function validateCountry(string $country) : string
-	{
+	private function validateCountry(
+		string $country
+	) : string {
 		// Country code have to be upper-cased
 		$country = strtoupper($country);
 
@@ -376,7 +394,11 @@ final class Phone
 		if ($country === 'AUTO' || $country === NULL) {
 			return 'AUTO';
 
-		} else if (strlen($country) === 2 && ctype_alpha($country) && in_array($country, $this->phoneNumberUtil->getSupportedRegions(), TRUE)) {
+		} elseif (
+			strlen($country) === 2
+			&& ctype_alpha($country)
+			&& in_array($country, $this->phoneNumberUtil->getSupportedRegions(), TRUE)
+		) {
 			return $country;
 
 		} else {
@@ -391,8 +413,9 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidTypeException
 	 */
-	private function validateType(string $type) : int
-	{
+	private function validateType(
+		string $type
+	) : int {
 		$constant = $this->constructPhoneTypeConstant($type);
 
 		if (defined($constant) && in_array($type, [self::TYPE_FIXED_LINE, self::TYPE_MOBILE, self::TYPE_VOIP, self::TYPE_PAGER, self::TYPE_EMERGENCY, self::TYPE_VOICEMAIL], TRUE)) {
@@ -410,8 +433,9 @@ final class Phone
 	 *
 	 * @return string
 	 */
-	private function constructPhoneTypeConstant(string $type) : string
-	{
+	private function constructPhoneTypeConstant(
+		string $type
+	) : string {
 		return '\libphonenumber\PhoneNumberType::' . $type;
 	}
 }

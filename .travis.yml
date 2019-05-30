@@ -5,7 +5,7 @@ env:
   - NETTE=~2.4.0
 
 php:
-  - 7.0
+  - 7.2
 
 before_install:
   - composer self-update

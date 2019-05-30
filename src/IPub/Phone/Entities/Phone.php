@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
  * @subpackage     Entities
  * @since          1.0.1
@@ -24,9 +24,20 @@ use IPub\Phone\Exceptions;
 use libphonenumber;
 use libphonenumber\PhoneNumberFormat;
 
+/**
+ * Phone number entity
+ *
+ * @package        iPublikuj:Phone!
+ * @subpackage     Entities
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 class Phone
 {
-    use Nette\SmartObject;
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
 
 	/**
 	 * The country code
@@ -130,9 +141,8 @@ class Phone
 		int $countryCode,
 		string $country,
 		string $type,
-		string $carrierName = NULL
-	)
-	{
+		?string $carrierName = NULL
+	) {
 		$this->rawOutput = $rawInput;
 		$this->rfcFormat = $rfcFormat;
 
@@ -150,7 +160,7 @@ class Phone
 	/**
 	 * @return int|NULL
 	 */
-	public function getCountryCode()
+	public function getCountryCode() : ?int
 	{
 		return $this->countryCode;
 	}
@@ -158,7 +168,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getNationalNumber()
+	public function getNationalNumber() : ?string
 	{
 		return $this->nationalNumber;
 	}
@@ -166,7 +176,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getInternationalNumber()
+	public function getInternationalNumber() : ?string
 	{
 		return $this->internationalNumber;
 	}
@@ -176,7 +186,7 @@ class Phone
 	 *
 	 * @return void
 	 */
-	public function setExtension(string $extension)
+	public function setExtension(string $extension) : void
 	{
 		$this->extension = $extension;
 	}
@@ -184,7 +194,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getExtension()
+	public function getExtension() : ?string
 	{
 		return $this->extension;
 	}
@@ -194,7 +204,7 @@ class Phone
 	 *
 	 * @return void
 	 */
-	public function setItalianLeadingZero(bool $italianLeadingZero)
+	public function setItalianLeadingZero(bool $italianLeadingZero) : void
 	{
 		$this->italianLeadingZero = $italianLeadingZero;
 	}
@@ -212,7 +222,7 @@ class Phone
 	 *
 	 * @return void
 	 */
-	public function setNumberOfLeadingZeros(int $numberOfLeadingZeros)
+	public function setNumberOfLeadingZeros(int $numberOfLeadingZeros) : void
 	{
 		$this->numberOfLeadingZeros = $numberOfLeadingZeros;
 	}
@@ -220,7 +230,7 @@ class Phone
 	/**
 	 * @return int|NULL
 	 */
-	public function getNumberOfLeadingZeros()
+	public function getNumberOfLeadingZeros() : ?int
 	{
 		return $this->numberOfLeadingZeros;
 	}
@@ -228,7 +238,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getRawOutput()
+	public function getRawOutput() : ?string
 	{
 		return $this->rawOutput;
 	}
@@ -236,7 +246,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getRFCFormat()
+	public function getRFCFormat() : ?string
 	{
 		return $this->rfcFormat;
 	}
@@ -252,7 +262,7 @@ class Phone
 	/**
 	 * @return string|NULL
 	 */
-	public function getCarrier()
+	public function getCarrier() : ?string
 	{
 		return $this->carrier;
 	}
@@ -260,7 +270,7 @@ class Phone
 	/**
 	 * @return string
 	 */
-	public function getCountry()
+	public function getCountry() : string
 	{
 		return $this->country;
 	}
@@ -270,7 +280,7 @@ class Phone
 	 *
 	 * @return void
 	 */
-	public function setTimeZones(array $timeZones)
+	public function setTimeZones(array $timeZones) : void
 	{
 		$this->timeZones = $timeZones;
 	}
@@ -411,7 +421,7 @@ class Phone
 	}
 
 	/**
-	 * @return string|NULL
+	 * @return string
 	 */
 	public function __toString()
 	{

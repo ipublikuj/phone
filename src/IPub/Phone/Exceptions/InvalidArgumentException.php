@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
  * @subpackage     Exceptions
  * @since          1.0.0
