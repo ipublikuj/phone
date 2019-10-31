@@ -1,5 +1,5 @@
 {
-  "name" : "ipub/phone",
+  "name" : "xsuchy09/phone",
   "type" : "library",
   "description" : "Phone helper & validator for Nette Framework",
   "keywords" : [
