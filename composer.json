@@ -45,22 +45,22 @@
 
     "ext-intl" : "*",
 
-    "giggsey/libphonenumber-for-php" : "~8.1",
+    "giggsey/libphonenumber-for-php" : "^8.10",
 
-    "nette/di" : "~2.4",
-    "nette/utils" : "~2.4"
+    "nette/di" : "^3.0",
+    "nette/utils" : "^3.0"
   },
 
   "require-dev" : {
-    "nette/bootstrap" : "~2.4",
-    "nette/mail" : "~2.4",
-    "nette/robot-loader" : "~2.4",
-    "nette/safe-stream" : "~2.3",
-    "nette/tester" : "~2.0",
+    "nette/bootstrap" : "^3.0",
+    "nette/mail" : "^3.0",
+    "nette/robot-loader" : "^3.0",
+    "nette/safe-stream" : "^2.4",
+    "nette/tester" : "^2.0",
 
-    "tracy/tracy" : "~2.4",
+    "tracy/tracy" : "^2.6",
 
-    "pds/skeleton" : "~1.0"
+    "pds/skeleton" : "^1.0"
   },
 
   "suggest" : {
