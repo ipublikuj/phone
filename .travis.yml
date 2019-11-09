@@ -11,6 +11,7 @@ before_install:
   - composer self-update
 
 before_script:
+  - php .travis.composer.php
   - composer install --no-interaction --prefer-source --dev
 
 script:
