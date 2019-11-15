@@ -1,6 +1,7 @@
 <?php
 /**
  * Test: IPub\Phone\Validator
+ *
  * @testCase
  *
  * @copyright      More in license.md
@@ -121,11 +122,11 @@ class PhoneHelpersTest extends Tester\TestCase
 
 	public function testFormatPhoneWithInvalidNumber()
 	{
-		Assert::exception(function() {
+		Assert::exception(function () {
 			$this->phone->format('0499123456', 'US');
 		}, 'IPub\Phone\Exceptions\NoValidPhoneException');
 
-		Assert::exception(function() {
+		Assert::exception(function () {
 			$this->phone->format('016123456', 'NL');
 		}, 'IPub\Phone\Exceptions\NoValidPhoneException');
 	}

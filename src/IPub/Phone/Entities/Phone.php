@@ -325,7 +325,7 @@ class Phone
 		if ($country === 'AUTO' || $country === NULL) {
 			$country = 'AUTO';
 
-		} else if (strlen($country) !== 2 || ctype_alpha($country) === FALSE || !in_array($country, $phoneNumberUtil->getSupportedRegions())) {
+		} elseif (strlen($country) !== 2 || ctype_alpha($country) === FALSE || !in_array($country, $phoneNumberUtil->getSupportedRegions())) {
 			throw new Exceptions\NoValidCountryException(sprintf('Provided country code "%s" is not valid. Provide valid country code or AUTO for automatic detection.', $country));
 		}
 
