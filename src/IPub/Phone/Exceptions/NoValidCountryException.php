@@ -16,6 +16,8 @@ declare(strict_types = 1);
 
 namespace IPub\Phone\Exceptions;
 
-class NoValidCountryException extends \Exception
+use Exception;
+
+class NoValidCountryException extends Exception
 {
 }

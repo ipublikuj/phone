@@ -16,6 +16,8 @@ declare(strict_types = 1);
 
 namespace IPub\Phone\Exceptions;
 
-class NoValidTypeException extends \Exception
+use Exception;
+
+class NoValidTypeException extends Exception
 {
 }
