@@ -33,28 +33,27 @@
   "extra" : {
     "ipub" : {
       "configuration" : {
-        "extensions" : {
-          "phone" : "IPub\\Phone\\DI\\PhoneExtension"
-        }
+        "extension" : "IPub\\Phone\\DI\\PhoneExtension"
       }
     }
   },
 
   "require" : {
-    "php" : ">=7.2.0",
+    "php" : ">=7.3.0",
 
     "ext-intl" : "*",
+    "ext-ctype" : "*",
 
-    "giggsey/libphonenumber-for-php" : "~8.1",
+    "giggsey/libphonenumber-for-php" : "~8.11",
 
-    "nette/di" : "~2.4 || ~3.0",
-    "nette/utils" : "~2.5 || ~3.0"
+    "nette/di" : "~3.0",
+    "nette/utils" : "~3.0"
   },
 
   "require-dev" : {
-    "nette/bootstrap" : "~2.4 || ~3.0",
-    "nette/mail" : "~2.4 || ~3.0",
-    "nette/robot-loader" : "~2.4 || ~3.0",
+    "nette/bootstrap" : "~3.0",
+    "nette/mail" : "~3.0",
+    "nette/robot-loader" : "~3.0",
     "nette/safe-stream" : "~2.3",
     "nette/tester" : "~2.3",
 

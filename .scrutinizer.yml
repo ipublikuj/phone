@@ -4,9 +4,7 @@ checks:
 build:
     environment:
         php:
-            version: 7.2
-        variables:
-            NETTE: default
+            version: 7.3
 
     dependencies:
         before:
@@ -16,7 +14,7 @@ build:
     tests:
         override:
             -
-                command: 'vendor/bin/tester tests -p php -c ./tests/php.ini-unix --coverage build/logs/clover.xml --coverage-src src'
+                command: 'vendor/bin/tester -s -p php -c ./tests/php.ini-unix tests --coverage build/logs/clover.xml --coverage-src src'
                 coverage:
                     file: build/logs/clover.xml
                     format: php-clover

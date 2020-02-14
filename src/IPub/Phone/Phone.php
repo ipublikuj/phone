@@ -212,6 +212,8 @@ final class Phone
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
+	 * @throws Exceptions\NoValidTypeException
+	 * @throws libphonenumber\NumberParseException
 	 */
 	public function getLocation(
 		string $number,
@@ -326,6 +328,7 @@ final class Phone
 	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidTypeException
 	 */
 	public function getExampleNationalNumber(
 		string $country,
@@ -343,6 +346,7 @@ final class Phone
 	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidTypeException
 	 */
 	public function getExampleInternationalNumber(
 		string $country,
@@ -359,6 +363,7 @@ final class Phone
 	 * @return string|NULL
 	 *
 	 * @throws Exceptions\NoValidCountryException
+	 * @throws Exceptions\NoValidTypeException
 	 */
 	private function getExampleNumber(
 		string $country,
