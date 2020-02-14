@@ -1,3 +1,4 @@
-composer.lock
-vendor
-tests/temp
+.idea
+/vendor
+/composer.lock
+tests/*/output

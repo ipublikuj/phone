@@ -19,7 +19,6 @@ namespace IPub\Phone\DI;
 use Nette;
 use Nette\Bridges;
 use Nette\DI;
-use Nette\PhpGenerator as Code;
 
 use IPub\Phone;
 
@@ -73,8 +72,10 @@ final class PhoneExtension extends DI\CompilerExtension
 	 *
 	 * @return void
 	 */
-	public static function register(Nette\Configurator $config, string $extensionName = 'phone')
-	{
+	public static function register(
+		Nette\Configurator $config,
+		string $extensionName = 'phone'
+	) : void {
 		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new PhoneExtension);
 		};
