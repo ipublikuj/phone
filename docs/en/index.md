@@ -6,13 +6,13 @@ This extension is based on the [PHP port](https://github.com/giggsey/libphonenum
 
 ## Installation
 
-The best way to install ipub/phone is using  [Composer](http://getcomposer.org/):
+The best way to install **ipub/phone** is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require ipub/phone
+composer require ipub/phone
 ```
 
-After that you have to register extension in config.neon.
+After that, you have to register extension in config.neon.
 
 ```neon
 extensions:
@@ -30,6 +30,7 @@ This extension have service which could be used for formatting and validating ph
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
+
     /**
      * @inject
      * @var \IPub\Phone\Phone
@@ -68,6 +69,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 
         // ...
     }
+
 }
 ```
 
@@ -75,8 +77,8 @@ Second parameter of each helper method is `country code` so if is not specified,
 
 Method for getting location info `getLocation` has additional params:
 
-* `$locale` - the language code for which the description should be written. If you are using translator which could return locale eg. en_US, helper will automatically use this translator.
-* `$userCountry` - the region code for a given user. This region will be omitted from the description if the phone number comes from this region. It is a two-letter uppercase ISO country code as defined by ISO 3166-1.
+- `$locale` - the language code for which the description should be written. If you are using translator which could return locale eg. en_US, helper will automatically use this translator.
+- `$userCountry` - the region code for a given user. This region will be omitted from the description if the phone number comes from this region. It is a two-letter uppercase ISO country code as defined by ISO 3166-1.
 
 ### Using trait
 
@@ -87,6 +89,10 @@ If you are using PHP ver. 4.0 and higher, you can use simple trait in your prese
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
-	use IPub\Phone\TPhone;
+
+    use IPub\Phone\TPhone;
+
+    // Your code here
+
 }
 ```

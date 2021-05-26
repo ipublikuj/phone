@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
+
 /**
- * NoValidCountryException.php
+ * IException.php
  *
- * @copyright      More in license.md
+ * @copyright      More in LICENSE.md
  * @license        http://www.ipublikuj.eu
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
@@ -12,12 +13,9 @@
  * @date           12.12.15
  */
 
-declare(strict_types = 1);
-
 namespace IPub\Phone\Exceptions;
 
-use Exception;
-
-class NoValidCountryException extends Exception
+interface IException
 {
+
 }

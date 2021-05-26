@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
+
 /**
- * NoValidPhoneException.php
+ * InvalidArgumentException.php
  *
- * @copyright      More in license.md
+ * @copyright      More in LICENSE.md
  * @license        http://www.ipublikuj.eu
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
@@ -12,12 +13,11 @@
  * @date           13.12.15
  */
 
-declare(strict_types = 1);
-
 namespace IPub\Phone\Exceptions;
 
-use Exception;
+use InvalidArgumentException as PHPInvalidArgumentException;
 
-class NoValidPhoneException extends Exception
+class InvalidArgumentException extends PHPInvalidArgumentException implements IException
 {
+
 }

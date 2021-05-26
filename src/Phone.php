@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
+
 /**
  * Phone.php
  *
- * @copyright      More in license.md
+ * @copyright      More in LICENSE.md
  * @license        http://www.ipublikuj.eu
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
@@ -12,18 +13,12 @@
  * @date           12.12.15
  */
 
-declare(strict_types = 1);
-
 namespace IPub\Phone;
-
-use Nette;
-use Nette\Localization;
 
 use libphonenumber;
 use libphonenumber\PhoneNumberFormat;
-
-use IPub\Phone\Entities;
-use IPub\Phone\Exceptions;
+use Nette;
+use Nette\Localization;
 
 /**
  * Phone number helpers
@@ -35,14 +30,10 @@ use IPub\Phone\Exceptions;
  */
 final class Phone
 {
-	/**
-	 * Implement nette smart magic
-	 */
+
 	use Nette\SmartObject;
 
-	/**
-	 * Define phone number types
-	 */
+	// Define phone number types
 	public const TYPE_FIXED_LINE = 'FIXED_LINE';
 	public const TYPE_MOBILE = 'MOBILE';
 	public const TYPE_FIXED_LINE_OR_MOBILE = 'FIXED_LINE_OR_MOBILE';
@@ -57,44 +48,34 @@ final class Phone
 	public const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
 	public const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
 
-	/**
-	 * @var libphonenumber\PhoneNumberUtil
-	 */
-	private $phoneNumberUtil;
+	/** @var libphonenumber\PhoneNumberUtil */
+	private libphonenumber\PhoneNumberUtil $phoneNumberUtil;
 
-	/**
-	 * @var libphonenumber\geocoding\PhoneNumberOfflineGeocoder
-	 */
-	private $phoneNumberGeocoder;
+	/** @var libphonenumber\geocoding\PhoneNumberOfflineGeocoder */
+	private libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder;
 
-	/**
-	 * @var libphonenumber\PhoneNumberToCarrierMapper
-	 */
-	private $carrierMapper;
+	/** @var libphonenumber\PhoneNumberToCarrierMapper */
+	private libphonenumber\PhoneNumberToCarrierMapper $carrierMapper;
 
-	/**
-	 * @var libphonenumber\PhoneNumberToTimeZonesMapper
-	 */
-	private $timeZonesMapper;
+	/** @var libphonenumber\PhoneNumberToTimeZonesMapper */
+	private libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper;
 
-	/**
-	 * @var Localization\ITranslator|NULL
-	 */
-	private $translator;
+	/** @var Localization\ITranslator|null */
+	private ?Localization\ITranslator $translator;
 
 	/**
 	 * @param libphonenumber\PhoneNumberUtil $phoneNumberUtil
 	 * @param libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder
 	 * @param libphonenumber\PhoneNumberToCarrierMapper $carrierMapper
 	 * @param libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper
-	 * @param Localization\ITranslator|NULL $translator
+	 * @param Localization\ITranslator|null $translator
 	 */
 	public function __construct(
 		libphonenumber\PhoneNumberUtil $phoneNumberUtil,
 		libphonenumber\geocoding\PhoneNumberOfflineGeocoder $phoneNumberGeocoder,
 		libphonenumber\PhoneNumberToCarrierMapper $carrierMapper,
 		libphonenumber\PhoneNumberToTimeZonesMapper $timeZonesMapper,
-		?Localization\ITranslator $translator = NULL
+		?Localization\ITranslator $translator = null
 	) {
 		// Lib phone library utils
 		$this->phoneNumberUtil = $phoneNumberUtil;
@@ -118,15 +99,15 @@ final class Phone
 	public function parse(
 		string $number,
 		string $country = 'AUTO'
-	) : Entities\Phone {
+	): Entities\Phone {
 		// Parse string into phone number
 		return Entities\Phone::fromNumber($number, $country);
 	}
 
 	/**
-	 * @param string|Entities\Phone $number
+	 * @param string $number
 	 * @param string $country
-	 * @param string|NULL $type
+	 * @param string|null $type
 	 *
 	 * @return bool
 	 *
@@ -136,33 +117,33 @@ final class Phone
 	public function isValid(
 		string $number,
 		string $country = 'AUTO',
-		?string $type = NULL
-	) : bool {
+		?string $type = null
+	): bool {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
 		// Check if phone type is valid
-		$type = $type !== NULL ? $this->validateType($type) : NULL;
+		$type = $type !== null ? $this->validateType($type) : null;
 
 		try {
 			// Parse string into phone number
-			$phoneNumber = $this->phoneNumberUtil->parse((string) $number, $country);
+			$phoneNumber = $this->phoneNumberUtil->parse($number, $country);
 
-			if ($type !== NULL && $this->phoneNumberUtil->getNumberType($phoneNumber) !== $type) {
-				return FALSE;
+			if ($type !== null && $this->phoneNumberUtil->getNumberType($phoneNumber) !== $type) {
+				return false;
 			}
 
 			// Automatic detection:
-			if ($country == 'AUTO') {
+			if ($country === 'AUTO') {
 				// Validate if the international phone number is valid for its contained country
-				return (bool) $this->phoneNumberUtil->isValidNumber($phoneNumber);
+				return $this->phoneNumberUtil->isValidNumber($phoneNumber);
 			}
 
 			// Validate number against the specified country
-			return (bool) $this->phoneNumberUtil->isValidNumberForRegion($phoneNumber, $country);
+			return $this->phoneNumberUtil->isValidNumberForRegion($phoneNumber, $country);
 
 		} catch (libphonenumber\NumberParseException $ex) {
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -171,7 +152,7 @@ final class Phone
 	 * @param string $country
 	 * @param int $format
 	 *
-	 * @return string|NULL
+	 * @return string|null
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
@@ -180,7 +161,7 @@ final class Phone
 		string $number,
 		string $country = 'AUTO',
 		int $format = self::FORMAT_INTERNATIONAL
-	) : ?string {
+	): ?string {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -195,7 +176,7 @@ final class Phone
 				return $entity->getRawOutput();
 
 			case self::FORMAT_RFC3966:
-				return $entity->getRFCFormat();
+				return $entity->getRfcFormat();
 
 			default:
 				throw new Exceptions\InvalidArgumentException('Invalid number format given, provide valid phone number format.');
@@ -205,8 +186,8 @@ final class Phone
 	/**
 	 * @param string $number
 	 * @param string $country
-	 * @param string|NULL $locale
-	 * @param string|NULL $userCountry
+	 * @param string|null $locale
+	 * @param string|null $userCountry
 	 *
 	 * @return string
 	 *
@@ -218,22 +199,22 @@ final class Phone
 	public function getLocation(
 		string $number,
 		string $country = 'AUTO',
-		?string $locale = NULL,
-		?string $userCountry = NULL
-	) : string {
-		if ($this->isValid((string) $number, $country)) {
+		?string $locale = null,
+		?string $userCountry = null
+	): string {
+		if ($this->isValid($number, $country)) {
 			$country = strtoupper($country);
 
-			if ($userCountry !== NULL) {
+			if ($userCountry !== null) {
 				// Check for valid user country
 				$userCountry = $this->validateCountry($userCountry);
 			}
 
 			// Parse phone number
-			$parsed = $this->phoneNumberUtil->parse((string) $number, $country);
+			$parsed = $this->phoneNumberUtil->parse($number, $country);
 
 			// Determine locale
-			$locale = $locale === NULL && $this->translator && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
+			$locale = $locale === null && $this->translator !== null && method_exists($this->translator, 'getLocale') ? $this->translator->getLocale() : 'en_US';
 
 			// Get phone number location
 			return $this->phoneNumberGeocoder->getDescriptionForNumber($parsed, $locale, $userCountry);
@@ -247,7 +228,7 @@ final class Phone
 	 * @param string $number
 	 * @param string $country
 	 *
-	 * @return string|NULL
+	 * @return string|null
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
@@ -255,7 +236,7 @@ final class Phone
 	public function getCarrier(
 		string $number,
 		string $country = 'AUTO'
-	) : ?string {
+	): ?string {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -267,7 +248,7 @@ final class Phone
 	 * @param string $number
 	 * @param string $country
 	 *
-	 * @return array
+	 * @return string[]
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidPhoneException
@@ -275,7 +256,7 @@ final class Phone
 	public function getTimeZones(
 		string $number,
 		string $country = 'AUTO'
-	) : array {
+	): array {
 		// Create phone entity
 		$entity = Entities\Phone::fromNumber($number, $country);
 
@@ -286,9 +267,9 @@ final class Phone
 	/**
 	 * Get list of library supported countries
 	 *
-	 * @return array
+	 * @return string[]
 	 */
-	public function getSupportedCountries() : array
+	public function getSupportedCountries(): array
 	{
 		return $this->phoneNumberUtil->getSupportedRegions();
 	}
@@ -304,7 +285,7 @@ final class Phone
 	 */
 	public function getCountryCodeForCountry(
 		string $country
-	) : int {
+	): int {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
@@ -333,7 +314,7 @@ final class Phone
 	public function getExampleNationalNumber(
 		string $country,
 		string $type = self::TYPE_FIXED_LINE
-	) : string {
+	): string {
 		return $this->getExampleNumber($country, PhoneNumberFormat::NATIONAL, $type);
 	}
 
@@ -351,7 +332,7 @@ final class Phone
 	public function getExampleInternationalNumber(
 		string $country,
 		string $type = self::TYPE_FIXED_LINE
-	) : string {
+	): string {
 		return $this->getExampleNumber($country, PhoneNumberFormat::INTERNATIONAL, $type);
 	}
 
@@ -360,7 +341,7 @@ final class Phone
 	 * @param int $format
 	 * @param string $type
 	 *
-	 * @return string|NULL
+	 * @return string
 	 *
 	 * @throws Exceptions\NoValidCountryException
 	 * @throws Exceptions\NoValidTypeException
@@ -369,17 +350,21 @@ final class Phone
 		string $country,
 		int $format,
 		string $type = self::TYPE_FIXED_LINE
-	) : ?string {
+	): string {
 		// Check if country is valid
 		$country = $this->validateCountry($country);
 
 		// Check if phone type is valid
-		$type = $type !== NULL ? $this->validateType($type) : NULL;
+		$type = $this->validateType($type);
 
 		// Create example number
 		$number = $this->phoneNumberUtil->getExampleNumberForType($country, $type);
 
-		return $number !== NULL ? $this->phoneNumberUtil->format($number, $format) : NULL;
+		if ($number !== null) {
+			return $this->phoneNumberUtil->format($number, $format);
+		}
+
+		throw new Exceptions\InvalidArgumentException('Provided values could not build example number');
 	}
 
 	/**
@@ -391,18 +376,18 @@ final class Phone
 	 */
 	private function validateCountry(
 		string $country
-	) : string {
+	): string {
 		// Country code have to be upper-cased
 		$country = strtoupper($country);
 
 		// Correct auto or null value
-		if ($country === 'AUTO' || $country === NULL) {
+		if ($country === 'AUTO') {
 			return 'AUTO';
 
 		} elseif (
 			strlen($country) === 2
 			&& ctype_alpha($country)
-			&& in_array($country, $this->phoneNumberUtil->getSupportedRegions(), TRUE)
+			&& in_array($country, $this->phoneNumberUtil->getSupportedRegions(), true)
 		) {
 			return $country;
 
@@ -420,10 +405,17 @@ final class Phone
 	 */
 	private function validateType(
 		string $type
-	) : int {
+	): int {
 		$constant = $this->constructPhoneTypeConstant($type);
 
-		if (defined($constant) && in_array($type, [self::TYPE_FIXED_LINE, self::TYPE_MOBILE, self::TYPE_VOIP, self::TYPE_PAGER, self::TYPE_EMERGENCY, self::TYPE_VOICEMAIL], TRUE)) {
+		if (defined($constant) && in_array($type, [
+				self::TYPE_FIXED_LINE,
+				self::TYPE_MOBILE,
+				self::TYPE_VOIP,
+				self::TYPE_PAGER,
+				self::TYPE_EMERGENCY,
+				self::TYPE_VOICEMAIL,
+			], true)) {
 			return constant($constant);
 
 		} else {
@@ -440,7 +432,8 @@ final class Phone
 	 */
 	private function constructPhoneTypeConstant(
 		string $type
-	) : string {
+	): string {
 		return '\libphonenumber\PhoneNumberType::' . $type;
 	}
+
 }

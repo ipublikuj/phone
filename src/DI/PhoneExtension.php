@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
+
 /**
  * PhoneExtension.php
  *
- * @copyright      More in license.md
+ * @copyright      More in LICENSE.md
  * @license        http://www.ipublikuj.eu
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Phone!
@@ -12,17 +13,12 @@
  * @date           12.12.15
  */
 
-declare(strict_types = 1);
-
 namespace IPub\Phone\DI;
 
-use Nette;
-use Nette\Bridges;
-use Nette\DI;
-
 use IPub\Phone;
-
 use libphonenumber;
+use Nette;
+use Nette\DI;
 
 /**
  * Phone extension container
@@ -34,10 +30,26 @@ use libphonenumber;
  */
 final class PhoneExtension extends DI\CompilerExtension
 {
+
+	/**
+	 * @param Nette\Configurator $config
+	 * @param string $extensionName
+	 *
+	 * @return void
+	 */
+	public static function register(
+		Nette\Configurator $config,
+		string $extensionName = 'phone'
+	): void {
+		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName): void {
+			$compiler->addExtension($extensionName, new PhoneExtension());
+		};
+	}
+
 	/**
 	 * @return void
 	 */
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
@@ -66,18 +78,4 @@ final class PhoneExtension extends DI\CompilerExtension
 			->setType(Phone\Phone::class);
 	}
 
-	/**
-	 * @param Nette\Configurator $config
-	 * @param string $extensionName
-	 *
-	 * @return void
-	 */
-	public static function register(
-		Nette\Configurator $config,
-		string $extensionName = 'phone'
-	) : void {
-		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
-			$compiler->addExtension($extensionName, new PhoneExtension);
-		};
-	}
 }

@@ -1,53 +1,24 @@
-<?php
-/**
- * Test: IPub\Phone\Validator
- *
- * @testCase
- *
- * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
- * @package        iPublikuj:Phone!
- * @subpackage     Tests
- * @since          1.0.0
- *
- * @date           13.12.15
- */
+<?php declare(strict_types = 1);
 
-declare(strict_types = 1);
-
-namespace IPubTests\Phone;
-
-use Nette;
-
-use Tester;
-use Tester\Assert;
+namespace Tests\Cases;
 
 use IPub\Phone;
+use Tester\Assert;
 
-use libphonenumber;
-
-require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../BaseTestCase.php';
 
 /**
- * Phone number helpers tests
- *
- * @package        iPublikuj:Phone!
- * @subpackage     Tests
- *
- * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ * @testCase
  */
-class PhoneHelpersTest extends Tester\TestCase
+class PhoneHelpersTests extends BaseTestCase
 {
-	/**
-	 * @var Phone\Phone
-	 */
+
+	/** @var Phone\Phone */
 	private $phone;
 
-	/**
-	 * @return array[]|array
-	 */
-	public function dataValidCountriesToCodes() : array
+	/** @return mixed[] */
+	public function dataValidCountriesToCodes(): array
 	{
 		return [
 			['CZ', 420],
@@ -57,16 +28,15 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setUp();
 
-		$dic = $this->createContainer();
-
 		// Get phone helper from container
-		$this->phone = $dic->getService('phone.phone');
+		$this->phone = $this->getContainer()
+			->getService('phone.phone');
 	}
 
 	public function testValidatePhoneWithDefaultCountryWithoutType()
@@ -106,7 +76,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * @throws \IPub\Phone\Exceptions\NoValidCountryException
+	 * @throws IPub\Phone\Exceptions\NoValidCountryException
 	 */
 	public function testFormatPhoneWithWrongCountry()
 	{
@@ -143,7 +113,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	public function testPhoneGetCarrier()
 	{
 		// Get unknown carrier with correct country value
-		Assert::equal(NULL, $this->phone->getCarrier('016123456', 'be'));
+		Assert::equal(null, $this->phone->getCarrier('016123456', 'be'));
 
 		// Get carrier with correct country value
 		Assert::equal('Orange', $this->phone->getCarrier('0499123456', 'be'));
@@ -174,7 +144,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * @throws \IPub\Phone\Exceptions\NoValidPhoneException
+	 * @throws IPub\Phone\Exceptions\NoValidPhoneException
 	 */
 	public function testParsingInvalidNumber()
 	{
@@ -182,10 +152,10 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * @dataProvider dataValidCountriesToCodes
-	 *
 	 * @param string $country
 	 * @param string $expected
+	 *
+	 * @dataProvider dataValidCountriesToCodes
 	 */
 	public function testGetCountryCodeForCountry($country, $expected)
 	{
@@ -193,7 +163,7 @@ class PhoneHelpersTest extends Tester\TestCase
 	}
 
 	/**
-	 * @throws \IPub\Phone\Exceptions\NoValidCountryException
+	 * @throws IPub\Phone\Exceptions\NoValidCountryException
 	 */
 	public function testGetCountryCodeForInvalidCountry()
 	{
@@ -218,18 +188,7 @@ class PhoneHelpersTest extends Tester\TestCase
 		Assert::equal('+420 212 345 678', $number);
 	}
 
-	/**
-	 * @return Nette\DI\Container
-	 */
-	protected function createContainer() : Nette\DI\Container
-	{
-		$config = new Nette\Configurator();
-		$config->setTempDirectory(TEMP_DIR);
-
-		Phone\DI\PhoneExtension::register($config);
-
-		return $config->createContainer();
-	}
 }
 
-\run(new PhoneHelpersTest());
+$test_case = new PhoneHelpersTests();
+$test_case->run();

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset>
+	<rule ref="./vendor/ninjify/coding-standard/ruleset.xml">
+		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+		<!-- we want brace on same line for multi-line definitions, checked by Squiz.Functions.MultiLineFunctionDeclaration -->
+		<exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
+
+		<exclude name="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing.IncorrectLinesCountAfterLastControlStructure"/>
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireTernaryOperator"/>
+		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
+		<exclude name="SlevomatCodingStandard.ControlStructures.AssignmentInCondition.assignmentInCondition"/>
+
+		<exclude name="SlevomatCodingStandard.Commenting.ForbiddenAnnotations.AnnotationForbidden"/>
+		<exclude name="SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectLinesCountBetweenDifferentAnnotationsTypes"/>
+
+		<exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessParameterAnnotation"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation"/>
+	</rule>
+
+	<!--Exclude folders -->
+	<exclude-pattern>/tests/tmp</exclude-pattern>
+	<exclude-pattern>tests/PHPStan/stubs/*</exclude-pattern>
+</ruleset>

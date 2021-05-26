@@ -39,36 +39,36 @@
   },
 
   "require" : {
-    "php" : ">=7.2.0",
-
+    "php" : ">=7.4.0",
     "ext-intl" : "*",
     "ext-ctype" : "*",
-
-    "giggsey/libphonenumber-for-php" : "~8.11",
-
-    "nette/di" : "~3.0",
-    "nette/utils" : "~3.0"
+    "giggsey/libphonenumber-for-php" : "^8.12",
+    "nette/di" : "^3.0",
+    "nette/utils" : "^3.2"
   },
 
   "require-dev" : {
-    "nette/bootstrap" : "~3.0",
-    "nette/mail" : "~3.0",
-    "nette/robot-loader" : "~3.0",
-    "nette/safe-stream" : "~2.3",
-    "nette/tester" : "~2.3",
-
-    "tracy/tracy" : "~2.4",
-
-    "pds/skeleton" : "~1.0"
-  },
-
-  "suggest" : {
-    "ipub/phone-ui" : "If you wanna use template helpers & form validation."
+    "contributte/console": "^0.9",
+    "mockery/mockery": "^1.4",
+    "nette/bootstrap": "^3.1",
+    "ninjify/nunjuck": "^0.3",
+    "ninjify/qa": "^0.12",
+    "pds/skeleton": "~1.0",
+    "phpstan/extension-installer": "^1.1",
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-deprecation-rules": "^0.12",
+    "phpstan/phpstan-nette": "^0.12",
+    "phpstan/phpstan-strict-rules": "^0.12",
+    "tracy/tracy": "^2.8"
   },
 
   "autoload" : {
-    "psr-0" : {
+    "psr-4" : {
       "IPub\\Phone\\" : "src/"
     }
+  },
+
+  "config" : {
+    "sort-packages" : true
   }
 }

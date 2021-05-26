@@ -1,0 +1,4 @@
+# for php-coveralls
+service_name: github-ci
+coverage_clover: coverage.xml
+json_path: coverage.json
